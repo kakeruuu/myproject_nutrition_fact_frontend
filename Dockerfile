@@ -6,11 +6,14 @@ WORKDIR /app
 
 COPY pyproject.toml .
 
-RUN apt-get update && \
-    apt-get install --no-install-recomends -y  curl git build-essential && \
-    pip install poetry && \
-    poetry config virtualenvs.create false && \
-    poetry install \
-    rm pyproject.toml
-
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y curl git build-essential \
+    # pipからインストールすればあらかじめパスが通る
+    && pip install poetry \ 
+    # venvのパスがディレクトリ名に依存するため無効に
+    && poetry config virtualenvs.create false \
+    # ふつうにvenvにインストールする
+    && poetry install \
+    # 後ほど同じファイルをマウントするので消しとく
+    && rm pyproject.toml
 
