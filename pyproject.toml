@@ -5,9 +5,9 @@ description = ""
 authors = ["kakeru suzuki <kakeruuuuuu0114＠gmail.com>"]
 
 [tool.poetry.dependencies]
-python  "^3.9"
+python = "^3.9"
 fastapi = "^0.75.1"
-uvicorn = {extras = ["standard"], versions = "^0.17.6"}
+uvicorn = {extras = ["standard"], version = "^0.17.6"}
 SQLAlchemy = "^1.4.35"
 
 [tool.poetry.dev-dependencies]
