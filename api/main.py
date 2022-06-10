@@ -2,7 +2,13 @@ from enum import Enum
 from typing import Union
 
 from fastapi import FastAPI
+from pydantic import BaseModel
 
+class Item(BaseModel):
+    name: str
+    description: Union[str, None] = None
+    price: float
+    tax: Union[float, None] = None
 
 class ModelName(str, Enum):
     alexnet = "alexnet"
@@ -13,6 +19,10 @@ class ModelName(str, Enum):
 app = FastAPI()
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name", "Baz"}]
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
 
 @app.get("/users/{user_id}/items/{item_id}")
 async def read_user_item(

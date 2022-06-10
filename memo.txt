@@ -1,2 +1,5 @@
 マウント付きdocker run
 docker run -d -it --name myproject1 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject
+
+6/9
+クエリパラメータとパスパラメータの違いについての理解が薄いかも
