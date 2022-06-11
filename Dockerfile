@@ -13,3 +13,4 @@ RUN apt-get update \
     && poetry install \
     && mkdir api
 
+ENTRYPOINT ["uvicorn", "api.main:app", "--reload"]
