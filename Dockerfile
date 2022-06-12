@@ -2,6 +2,8 @@ FROM python:3.9-buster
 
 ENV PYTHONUNBUFFERED=1
 
+EXPOSE 80
+
 WORKDIR /project
 
 COPY pyproject.toml .
@@ -13,4 +15,4 @@ RUN apt-get update \
     && poetry install \
     && mkdir api
 
-ENTRYPOINT ["uvicorn", "api.main:app", "--reload"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "80"]

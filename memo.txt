@@ -1,5 +1,17 @@
 マウント付きdocker run
 docker run -d -it --name myproject1 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject
+docker run -d -it -p 8000:8000 --name myproject1 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject
+docker run -d -it --name myproject1 -p 80:80 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject 
 
 6/9
 クエリパラメータとパスパラメータの違いについての理解が薄いかも
+
+6/12
+ローカル側から起動したコンテナのサーバにアクセスできない
+docker exec -it MYAPP bash
+uvicorn main:app --reload
+→ブラウザにアクセスできない
+
+docker コンテナに直接入る
+uvicorn main:app --reload
+→アクセスできる
