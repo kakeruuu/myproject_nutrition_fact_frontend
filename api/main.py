@@ -22,8 +22,11 @@ app = FastAPI()
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name", "Baz"}]
 
 @app.post("/items/")
-async def create_item(item: Item):
-    return item
+async def create_item(item_id: int, item: Item, q: Union[str, None] = None):
+    result = {"item_id": item_id, **item.dict()}
+    if q:
+        result.update({"q": q})
+    return result
 
 @app.get("/users/{user_id}/items/{item_id}")
 async def read_user_item(
