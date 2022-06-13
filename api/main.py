@@ -1,7 +1,8 @@
+from email.policy import default
 from enum import Enum
 from typing import Union
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from pydantic import BaseModel
 
 
@@ -20,6 +21,14 @@ class ModelName(str, Enum):
 app = FastAPI()
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name", "Baz"}]
+
+@app.get("/items/")
+async def read_items(q: Union[str, None] = Query(default=None, max_length=50)):
+    # 引数のqが50文字を超えないようにする
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
 
 @app.post("/items/")
 async def create_item(item_id: int, item: Item, q: Union[str, None] = None):
