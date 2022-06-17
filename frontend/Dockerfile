@@ -1,11 +1,9 @@
 FROM node:latest
 
-WORKDIR /project/src
+WORKDIR /project/app
 
 RUN npx create-react-app myapp \
     cd myapp \
     npm add axios
 
-WORKDIR /project/src/myapp
-
-CMD [ "npm", "start"]
+# CMD [ "npm", "start" ]
