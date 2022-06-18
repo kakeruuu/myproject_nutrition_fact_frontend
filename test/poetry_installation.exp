@@ -1,0 +1,48 @@
+#!/usr/bin/expect
+
+set ans_n no
+set ans_y yes
+set package_name test_pack
+
+spawn poetry init
+
+expect {
+    -regexp ".*Package.*" {
+        send "${package_name}\n"
+        exp_continue
+    }
+    -regexp ".*Version.*" {
+        send "\n"
+        exp_continue
+    }
+    -regexp ".*Description.*" {
+        send "\n"
+        exp_continue
+    }
+    -regexp ".*Author.*" {
+        send "${ans_n}\n"
+        exp_continue
+    }
+    -regexp ".*License.*" {
+        send "\n"
+        exp_continue
+    }
+    -regexp ".*Compatible.*" {
+        send "\n"
+        exp_continue
+    }
+    -regexp ".*main.*" {
+        send "${ans_n}\n"
+        exp_continue
+    }
+    -regexp ".*development*" {
+        send "${ans_n}\n"
+        exp_continue
+    }
+    -regexp ".*generation?.*" {
+        send "${ans_y}\n"
+        exp_continue
+    }
+}
+
+exit 0
