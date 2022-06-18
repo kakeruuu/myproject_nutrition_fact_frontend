@@ -2,8 +2,8 @@ FROM node:latest
 
 WORKDIR /project/app
 
-RUN npx create-react-app myapp \
-    cd myapp \
-    npm add axios
+RUN npx create-react-app myapp && \
+    cd myapp && \
+    npm install axios
 
-# CMD [ "npm", "start" ]
+CMD sh -c "cd /project/app/myapp && npm start"

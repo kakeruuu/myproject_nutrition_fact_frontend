@@ -1,9 +1,13 @@
 マウント付きdocker run
+backend
 docker run -d -it --name myproject1 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject
 docker run -d -it -p 8000:8000 --name myproject1 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject
 docker run -d -it --name myproject1 -p 80:80 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject 
 
-docker run -d -it --name cont_myproject1_front --mount type=bind,source="$(pwd)"/src,target=/project/app react_myproject
+frontend
+docker run -d -it --name cont_myproject1_front --mount type=bind,source="$(pwd)"/frontend/src,target=/project/app/myapp/src react
+docker run -d -it --name cont_myproject_front -p 3000:3000 react
+
 6/9
 クエリパラメータとパスパラメータの違いについての理解が薄いかも
 
