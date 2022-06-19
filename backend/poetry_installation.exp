@@ -6,6 +6,7 @@ set package_name test_pack
 
 spawn poetry init
 
+# 注意:即席の正規表現のため範囲が甘いかもしれない
 expect {
     -regexp ".*Package.*" {
         send "${package_name}\n"

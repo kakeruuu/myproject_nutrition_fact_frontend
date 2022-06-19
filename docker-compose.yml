@@ -1,0 +1,15 @@
+version: '3'
+services:
+  backend:
+    build: backend/
+    volumes:
+      - type: bind
+        source: ./backend/api
+        target: /project/api
+    ports:
+      - 80:80
+  
+  frontend:
+    build: frontend/
+    ports:
+      - 3000:3000
