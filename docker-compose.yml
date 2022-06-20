@@ -13,3 +13,13 @@ services:
     build: frontend/
     ports:
       - 3000:3000
+# コンテナ破棄時にデータを残しておく必要性があるなら、volumnsを追加したほうがいいかも
+  db:
+    build: db_mysql/
+    container_name: myproject1_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - TZ="Asia/Tokyo"
+    ports:
+      - 33306:3306
+    
