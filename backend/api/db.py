@@ -9,7 +9,10 @@ engine = create_engine("mysql://root:M4e80Xr1jQcdBnPt@db:3306/python_db")
 
 Base = declarative_base()
 
-SessionClass = sessionmaker(autocommit=false, autoflush=true, engine)  # セッションを作るクラスを作成
-session = SessionClass()
+session = Session(
+    autocommit = False,
+    autoflush = True,
+    bind = engine
+)
 
-print(session.query())
+Base.query_property()
