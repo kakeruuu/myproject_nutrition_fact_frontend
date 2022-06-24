@@ -18,6 +18,7 @@ RUN apt-get update \
     && poetry add uvicorn \
     && poetry add SQLAlchemy \
     && poetry add gunicorn \
+    && poetry add mysqlclient \
     && poetry add --dev pytest \
     && mkdir api
 
