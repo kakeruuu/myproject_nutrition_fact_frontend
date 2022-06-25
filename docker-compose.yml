@@ -8,12 +8,12 @@ services:
         target: /project/api
     ports:
       - 80:80
-  
+# TODO：ホストのソースとreact-create-appで作成されたコードをバインドする方がいいと思う
   frontend:
     build: frontend/
     ports:
       - 3000:3000
-# TODO:コンテナ破棄時にデータを残しておく必要性があるなら、volumnsを追加したほうがいいかも
+
   db:
     build: db_mysql/
     container_name: myproject1_db

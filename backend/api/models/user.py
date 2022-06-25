@@ -13,6 +13,7 @@ class User(Base):
     name = Column("name", String(200))
     age = Column("age", Integer)
     email = Column("email", String(200))
-
+    
+    
 if __name__=="__main__":
     Base.metadata.create_all(bind=engine)
