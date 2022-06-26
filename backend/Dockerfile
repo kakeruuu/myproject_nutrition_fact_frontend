@@ -1,8 +1,6 @@
 FROM python:3.9-buster
 # TODO:sqlalchemyでDBアクセスするときにDBのパスが必要になるため、環境変数に.envのDBパスを設定したほうがいい？
 ENV PYTHONUNBUFFERED=1
-# TODO:docker-composeでportsの設定をしているからEXPOSEとCMDでportsのオプションを消していい？
-EXPOSE 80
 
 WORKDIR /project
 
@@ -18,7 +16,7 @@ RUN apt-get update \
     && poetry add uvicorn \
     && poetry add SQLAlchemy \
     && poetry add gunicorn \
-    && poetry add mysqlclient \
+    && poetry add databases[aiomysql]\
     && poetry add --dev pytest \
     && mkdir api
 
