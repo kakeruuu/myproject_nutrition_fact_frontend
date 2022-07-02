@@ -1,5 +1,5 @@
 FROM python:3.9-buster
-# TODO:sqlalchemyでDBアクセスするときにDBのパスが必要になるため、環境変数に.envのDBパスを設定したほうがいい？
+# TODO:sqlalchemyでDBアクセスするときにDBのpasswordが必要になるため、環境変数に.envのDBのpasswordを設定したほうがいい？
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /project

@@ -14,6 +14,8 @@ services:
     ports:
       - 3000:3000
 
+  web:
+    build: /nginx
   db:
     build: db_mysql/
     container_name: myproject1_db
