@@ -16,8 +16,11 @@ RUN apt-get update \
     && poetry add uvicorn \
     && poetry add SQLAlchemy \
     && poetry add gunicorn \
+    && poetry add mysqlclient \
     && poetry add databases[aiomysql]\
+    && poetry add pandas\
     && poetry add --dev pytest \
-    && mkdir api
+    && mkdir api \
+    && mkdir create_table
 
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]

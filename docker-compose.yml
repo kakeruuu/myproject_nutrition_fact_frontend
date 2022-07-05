@@ -6,6 +6,9 @@ services:
       - type: bind
         source: ./backend/api
         target: /project/api
+      - type: bind
+        source: ./backend/create_table
+        target: /project/create_table
     ports:
       - 80:80
 # TODO：ホストのソースとreact-create-appで作成されたコードをバインドする方がいいと思う
@@ -14,8 +17,8 @@ services:
     ports:
       - 3000:3000
 
-  web:
-    build: /nginx
+  # web:
+  #   build: /nginx
     
   db:
     build: db_mysql/
