@@ -21,3 +21,6 @@ uvicorn main:app --reload
 docker コンテナに直接入る
 uvicorn main:app --reload
 →アクセスできる
+
+7/5
+gitリポジトリを分割する
