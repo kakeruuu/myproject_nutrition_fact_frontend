@@ -4,7 +4,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def main():
-    engine = create_engine("mysql://root:M4e80Xr1jQcdBnPt@db:3306/myproject_nutrition_fact?charset=utf8mb4")
+    
+    engine = create_engine("mysql://root:" + os.environ["DB_PASSWORD"] + "@db:3306/myproject_nutrition_fact?charset=utf8mb4")
     tbl_name = "nutrition_facts"
     # TODO:データベース上の日本語が文字化けしているので直す
     db_csv_path = os.getcwd() + "/csv/db_data.csv"

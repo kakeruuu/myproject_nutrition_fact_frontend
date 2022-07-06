@@ -1,5 +1,6 @@
 version: '3'
 services:
+# TODO:環境変数でDBのパスワード渡す
   backend:
     build: backend/
     volumes:
