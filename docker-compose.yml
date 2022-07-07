@@ -1,6 +1,5 @@
 version: '3'
 services:
-# TODO:環境変数でDBのパスワード渡す
   backend:
     build: backend/
     volumes:
@@ -12,6 +11,8 @@ services:
         target: /project/create_table
     ports:
       - 80:80
+    env_file:
+      - .env
 # TODO：ホストのソースとreact-create-appで作成されたコードをバインドする方がいいと思う
   frontend:
     build: frontend/
