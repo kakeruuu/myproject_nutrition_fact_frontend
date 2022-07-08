@@ -30,6 +30,7 @@ services:
       - TZ="Asia/Tokyo"
     volumes:
       - myproject1_db_data:/var/lib/mysql
+      - db_mysql/sql:/docker-entrypoint-initdb.d
     ports:
       - 33306:3306
     command: --default-authentication-plugin=mysql_native_password
