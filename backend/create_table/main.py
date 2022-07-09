@@ -10,8 +10,7 @@ def main():
                             + os.environ["DB_PASSWORD"] 
                             + "@db:3306/myproject_nutrition_fact?charset=utf8")
 
-    tbl_name = "nutrition_facts"
-    # TODO:データベース上の日本語が文字化けしているので直す
+    tbl_name = "nutrition_facts"    
     db_csv_path = os.getcwd() + "/csv/db_data.csv"
     df = pd.read_csv(db_csv_path, encoding="utf-8_sig")
     

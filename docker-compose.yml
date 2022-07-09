@@ -29,8 +29,9 @@ services:
       - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
       - TZ="Asia/Tokyo"
     volumes:
-      - myproject1_db_data:/var/lib/mysql
-      - db_mysql/sql:/docker-entrypoint-initdb.d
+      - type: volume
+        source: myproject1_db_data
+        target: /var/lib/mysql
     ports:
       - 33306:3306
     command: --default-authentication-plugin=mysql_native_password
