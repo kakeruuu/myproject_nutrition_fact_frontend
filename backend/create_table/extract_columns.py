@@ -4,7 +4,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 
-def main():
+def create_nutrition_fact_db():
     
     engine = create_engine("mysql://root:" 
                             + os.environ["DB_PASSWORD"] 
@@ -17,4 +17,4 @@ def main():
     df.to_sql(con=engine, name=tbl_name)
 
 if __name__=="__main__":
-    main()
+    create_nutrition_fact_db()
