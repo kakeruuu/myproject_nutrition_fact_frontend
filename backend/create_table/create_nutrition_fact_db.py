@@ -14,8 +14,16 @@ def create_nutrition_fact_db():
     db_csv_path = os.getcwd() + "/csv/db_data.csv"
     df = pd.read_csv(db_csv_path, encoding="utf-8_sig")
     
-    # TODO:dtypesで取得できるカラムをテキストファイルに出力する
-    # with open("./text", mode="w") as f:
+    # dtypesで取得できるカラムをテキストファイルに出力する
+    series = df.dtypes
+    series.to_csv("text/sample.csv")
+
+    # pydanticに対応した形に変換する
+    series[series == "int64"] = "int"
+    series[series == "object"] = "text"
+    series[series == "float64"] = "float"
+
+    # TODO:「：」でカラム名とデータ型を結合する
 
     df.to_sql(con=engine, name=tbl_name)
 
