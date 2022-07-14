@@ -1,3 +1,4 @@
+import csv
 import os
 
 import pandas as pd
@@ -14,17 +15,20 @@ def create_nutrition_fact_db():
     db_csv_path = os.getcwd() + "/csv/db_data.csv"
     df = pd.read_csv(db_csv_path, encoding="utf-8_sig")
     
-    # dtypesで取得できるカラムをテキストファイルに出力する
+    # dtypesでカラムのseriesを取得する
     series = df.dtypes
-    series.to_csv("text/sample.csv")
 
     # pydanticに対応した形に変換する
     series[series == "int64"] = "int"
     series[series == "object"] = "text"
     series[series == "float64"] = "float"
 
-    # TODO:「：」でカラム名とデータ型を結合する
-
+    # 「：」でカラム名とデータ型を結合する
+    with open("text/sample.csv", "w") as f:
+        list_d = [[":".join([i, v])] for i,v in series.items()]
+        writer = csv.writer(f)
+        writer.writerows(list_d)
+        
     df.to_sql(con=engine, name=tbl_name)
 
 if __name__=="__main__":
