@@ -1,5 +1,5 @@
 from setting import session
-from user import User
+from models.nutritionFact import NutritionFact
 
 user = User()
 user.name = "次郎"
