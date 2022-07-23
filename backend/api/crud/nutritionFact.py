@@ -1,11 +1,12 @@
-from setting import session
-from models.nutritionFact import NutritionFact
+from api.setting import session
+from api.models.nutritionFact import NutritionFact
 
-user = User()
-user.name = "次郎"
-session.add(user)
-session.commit()
 
-print(session.query(User).all())
-
-session.close()
+def read_nutrition():
+    result = NutritionFact.query.limit(10).all()
+    # ↑と同義 result = session.query(NutritionFact).limit(10).all()
+    r_list = [row.food_name for row in result]
+        
+    session.commit()
+    
+    return r_list

@@ -32,3 +32,6 @@ class NutritionFact(BaseModel):
     zinc: float
     copper: float
     manganese: float
+
+    class Config:
+        orm_mode = True

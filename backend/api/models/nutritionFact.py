@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime
 
-from setting import engine
-from setting import Base
+from api.setting import engine
+from api.setting import Base
 
 class NutritionFact(Base):
-    __tablename__ = "nutritionFact"
+    __tablename__ = "nutrition_facts"
     __table_args__ = {
         "comment": "食品成分表情報のマスターテーブル"
     }

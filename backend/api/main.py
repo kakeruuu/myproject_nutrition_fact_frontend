@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.crud.nutritionFact import *
+
 app = FastAPI()
 
 origins = [
@@ -17,5 +19,9 @@ app.add_middleware(
 
 
 @app.get("/")
-async def index():
+def index():
     return {"Hello": "World"}
+
+@app.get("/search")
+def search_nutirition():
+    return read_nutrition()
