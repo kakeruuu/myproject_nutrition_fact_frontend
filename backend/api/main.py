@@ -23,5 +23,5 @@ def index():
     return {"Hello": "World"}
 
 @app.get("/search")
-def search_nutirition():
-    return read_nutrition()
+def search_nutirition(q: str):
+    return read_nutrition(q)
