@@ -7,8 +7,6 @@ def read_nutrition(q: str):
     # ↑と同義 result = session.query(NutritionFact)
     r_list = [row.food_name for row in result]
 
-    print(r_list)
-    print(q)
     session.commit()
 
     return r_list
