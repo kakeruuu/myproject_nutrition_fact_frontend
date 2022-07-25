@@ -1,7 +1,11 @@
-from fastapi import FastAPI
+from typing import Optional, List
+
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.crud.nutritionFact import *
+from api.setting import get_session
 
 app = FastAPI()
 
@@ -22,6 +26,8 @@ app.add_middleware(
 def index():
     return {"Hello": "World"}
 
-@app.get("/search")
-def search_nutirition(q: str):
-    return read_nutrition(q)
+@app.post("/search")
+async def search_nutirition(
+    q: str, db: AsyncSession = Depends(get_session)
+    ):
+    return await read_nutrition(q, db)

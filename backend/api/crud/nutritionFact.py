@@ -1,12 +1,13 @@
-from api.setting import session
+from sqlalchemy import select
+from sqlalchemy.engine import Result
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from api.models.nutritionFact import NutritionFact
 
 
-def read_nutrition(q: str):
-    result = NutritionFact.query.filter(NutritionFact.food_name.contains(q))
-    # ↑と同義 result = session.query(NutritionFact)
-    r_list = [row.food_name for row in result]
-
-    session.commit()
-
-    return r_list
+async def read_nutrition(q: str, db: AsyncSession):
+    result: Result = await db.execute(
+        select(NutritionFact).filter(NutritionFact.food_name.contains(q))
+        )
+    
+    return result.all()

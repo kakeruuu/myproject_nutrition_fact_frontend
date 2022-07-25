@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime
 
-from api.setting import engine
+from api.setting import async_engine
 from api.setting import Base
 
 class NutritionFact(Base):
@@ -42,6 +42,3 @@ class NutritionFact(Base):
     # TODO:食品成分表の数値であってほしいデータのデータ型がテキストになっているのを修正
     # Tr - † の削除で修正完了
     # doubleは小数
-
-if __name__=="__main__":
-    Base.metadata.create_all(bind=engine)

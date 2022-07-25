@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 
 async_engine = create_async_engine(
-    "mysql://root:" + os.environ["DB_PASSWORD"] + "@db:3306/myproject_nutrition_fact?charset=utf8mb4",
+    "mysql+aiomysql://root:" + os.environ["DB_PASSWORD"] + "@db:3306/myproject_nutrition_fact?charset=utf8mb4",
     echo=True
     )
 
