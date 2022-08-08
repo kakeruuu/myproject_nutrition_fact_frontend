@@ -1,39 +1,12 @@
 version: '3'
 services:
-  backend:
-    build: backend/
-    volumes:
-      - type: bind
-        source: ./backend/api
-        target: /project/api
-      - type: bind
-        source: ./backend/create_table
-        target: /project/create_table
-    ports:
-      - 80:80
-    env_file:
-      - .env
 # TODO：ホストのソースとreact-create-appで作成されたコードをバインドする方がいいと思う
   frontend:
+    container_name: myproject1_frontend
     build: frontend/
     ports:
       - 3000:3000
-
-  # web:
-  #   build: /nginx
-    
-  db:
-    build: db_mysql/
-    container_name: myproject1_db
-    environment:
-      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
-      - TZ="Asia/Tokyo"
     volumes:
-      - type: volume
-        source: myproject1_db_data
-        target: /var/lib/mysql
-    ports:
-      - 33306:3306
-    command: --default-authentication-plugin=mysql_native_password
-volumes:
-  myproject1_db_data:
+      - type: bind
+        source: ./frontend/src/
+        target: /project/app/myapp/src/
