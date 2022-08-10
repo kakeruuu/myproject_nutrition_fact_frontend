@@ -1,6 +1,5 @@
 version: '3'
 services:
-# TODO：ホストのソースとreact-create-appで作成されたコードをバインドする方がいいと思う
   frontend:
     container_name: myproject1_frontend
     build: frontend/
