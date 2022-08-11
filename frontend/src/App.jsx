@@ -1,5 +1,10 @@
+// import React はJSXファイルをReact.createElement()に変換する
+// つまりReact.createElement()の記述をなくせる？
 import React from "react";
 import axios from "axios";
+import './App.css';
+
+// Reactコンポ―ネントはHelloWorldのようなパスカルケースを好む
 
 function App() {
 	const [data, setData] = React.useState();
