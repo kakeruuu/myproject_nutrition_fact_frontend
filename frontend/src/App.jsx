@@ -6,6 +6,7 @@ import './App.css';
 
 // Reactコンポ―ネントはHelloWorldのようなパスカルケースを好む
 
+// Appをappにしたらエラーになる
 function App() {
 	const [data, setData] = React.useState();
 	const url = "http://127.0.0.1:80";
@@ -23,4 +24,5 @@ function App() {
 	);
 }
 
+// Appコンポーネントを他のモジュールでも使えるようにする
 export default App;
