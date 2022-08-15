@@ -8,7 +8,7 @@ import './App.css';
 
 // Appをappにしたらエラーになる
 // function App() {
-// 	const [data, setData] = React.useState();
+// 	const [data, setData] = React.useState([]);
 // 	const url = "http://127.0.0.1:80";
 
 // 	const GetData = () => {
@@ -16,6 +16,8 @@ import './App.css';
 // 			setData(res.data);
 // 		});
 // 	};
+// 
+// 以下はHTMLを記述しているだけ
 // 	return (
 // 		<div>
 // 			<div>ここに処理を書いていきます</div>
@@ -24,9 +26,9 @@ import './App.css';
 // 	);
 // }
 
-function Test() {
-	const data = "React";
-
+function Test(props) {
+	const data = props.subject;
+	
 	return (
 		<div className="App">
 			<p>
