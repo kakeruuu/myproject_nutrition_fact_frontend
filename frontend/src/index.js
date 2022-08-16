@@ -3,15 +3,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // import App from './App';
-import Test from './App';
+import App from './App';
 
 
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(
-//   <React.StrictMode>
-//     <Test />
-//   </React.StrictMode>
-// );
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
 // // If you want to start measuring performance in your app, pass a function
 // // to log results (for example: reportWebVitals(console.log))
@@ -19,4 +19,4 @@ import Test from './App';
 // reportWebVitals();
 
 // subject~の部分でpropsと呼ばれるオブジェクトをApp.jsxに渡している？
-ReactDOM.render(<Test subject="Clarice"/>, document.getElementById('root'));
+// ReactDOM.render(<App />, document.getElementById('root'));

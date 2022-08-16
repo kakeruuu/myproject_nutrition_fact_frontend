@@ -4,7 +4,8 @@ WORKDIR /project/app
 
 RUN npx create-react-app myapp && \
     cd myapp && \
-    npm install axios
+    npm install axios && \
+    npm install @mui/material @emotion/react @emotion/styled
     
 RUN rm -rf /project/app/myapp/src && \
     mkdir /project/app/myapp/src

@@ -1,26 +1,2 @@
-マウント付きdocker run
-backend
-docker run -d -it --name myproject1 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject
-docker run -d -it -p 8000:8000 --name myproject1 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject
-docker run -d -it --name myproject1 -p 80:80 --mount type=bind,source="$(pwd)"/api,target=/project/api fastapi_myproject 
-
-frontend
-docker run -d -it --name cont_myproject1_front --mount type=bind,source="$(pwd)"/frontend/src,target=/project/app/myapp/src react
-docker run -d -it --name cont_myproject_front -p 3000:3000 react
-docker run -d -it --name cont_myproject1_front -p 3000:3000 myproject_fastapi_frontend
-
-6/9
-クエリパラメータとパスパラメータの違いについての理解が薄いかも
-
-6/12
-ローカル側から起動したコンテナのサーバにアクセスできない
-docker exec -it MYAPP bash
-uvicorn main:app --reload
-→ブラウザにアクセスできない
-
-docker コンテナに直接入る
-uvicorn main:app --reload
-→アクセスできる
-
-7/5
-gitリポジトリを分割する
+8/15
+まず何から考えればよいか考えた結果、変数の受け渡しやAPIの取得はなんとなくわかるので、UIをどのような形にするのかライブラリは何を使うのかを考えるところから始めることにする。
