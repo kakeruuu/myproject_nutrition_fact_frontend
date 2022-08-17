@@ -1,5 +1,7 @@
 FROM node:latest
 
+ENV CHOKIDAR_USEPOLLING=true
+
 WORKDIR /project/app
 
 RUN npx create-react-app myapp && \
