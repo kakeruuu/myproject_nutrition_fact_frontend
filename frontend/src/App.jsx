@@ -1,6 +1,12 @@
 import React from "react";
-import { Box } from "@mui/material"
-import { TextField } from "@mui/material";
+import Box from "@mui/material/Box"
+import TextField from "@mui/material/TextField";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import { ExpandMore } from '@mui/icons-material';
+// import { ExpandLessIcon } from '@mui/icons-material';
 
 
 function App() {
@@ -14,7 +20,26 @@ function App() {
           alignItems: 'center',
         }}
       >
-        <TextField id="standard-basic" label="standard" variant="standard" />
+        {/* TODO：テキストフィールドとアコーディオンの距離を開ける */}
+        {/* TODO：テキストフィールドとアコーディオンをBoxにまとめる。
+                  その方が細かい調整が効かせやすい？ */}
+        <TextField id="standard-basic" label="Food Name" variant="standard" />
+
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMore />}
+            aria_controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>詳しく</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              ここに内容を書く
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+
       </Box>
     </div>
   );
