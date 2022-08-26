@@ -24,8 +24,11 @@ export function Test() {
   const [count, setCount] = useState(0)
 
   // マウント時・更新・アンマウント時
+  // TODO：リクエストを送る
   useEffect(() => {
-    document.title = `You clicked ${count} times`;
+    fetch("")
+      .then(response => response.json())
+      .then()
   })
 
   return (
