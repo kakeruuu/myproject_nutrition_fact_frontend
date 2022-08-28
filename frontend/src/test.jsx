@@ -19,11 +19,25 @@ import React, { useState, useEffect } from "react";
 
 
 export function Test() {
-  const [texts, setText] = useState(["test"])
+  const [texts, setText] = useState([])
+  
+  const apiFetch = () => {
+    fetch("http://localhost", {method: "Get"})
+    .then(res => res.json())
+    .then(data => {
+      setText([...texts, data.Hello])
+    })
+  }
+
+  // 更新された値を使う処理みたいなのが適している？
+  useEffect(() => {
+    document.title = texts.join()
+  })
 
   return (
     <div>
-      <button onClick={() => setText([...texts, "test"])}>
+      {/* 再レンダリング */}
+      <button onClick={apiFetch}>
         テキスト追加
       </button>
       <ul>
