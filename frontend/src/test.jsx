@@ -40,10 +40,7 @@ export function Test() {
       <button onClick={apiGet}>
         テキスト追加
       </button>
-
       <PostsForm />
-      
-
       <ul>
         {texts.map((text, index) => {
           return <li key={index}>{text}</li>
@@ -63,15 +60,24 @@ function PostsForm() {
   // その場合、バックエンドのcrudの引数を変えないと上手くいかない
   // まずは自分のではなく、簡単なAPIから試す
   // httpbinを使って、オウム返しをして正しく動作するか確認する
-  const params = {q: posts}
+  const params = {method: "POST", body : JSON.stringify({q: posts})}
   const apiPost = () => {
-    
+    fetch("https://httpbin.org/post", params)
+    .then(response => response.json())
+    .then(data => {
+      setPost(data.q + ":test")
+    })
   }
+  
+  // 処理の内容をわかりやすくするために以下のStateを追加
+  // TODO：fetchPostで返される値がよくわかっていないのでまずはbodyに入れる値があっているのかどうか確認する
+  const [val, setVal] = useState("")
 
   return (
     <div id="posts">
-      <input type="text" id="posts" value={posts}></input>
-      <button type="submit" onClick="">送信</button>
+      <input type="text" id="posts" value={val} onChange={(event) => setVal(event.target.value)}></input>
+      <button type="submit" onClick={apiPost}>送信</button>
+      <p>{posts}</p>
     </div>
   )
 }
