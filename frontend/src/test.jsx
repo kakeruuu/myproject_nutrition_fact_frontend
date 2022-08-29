@@ -21,7 +21,12 @@ import React, { useState, useEffect } from "react";
 export function Test() {
   const [texts, setText] = useState([])
   
-  const apiFetch = () => {
+  // 更新された値を使う処理みたいなのが適している？
+  useEffect(() => {
+    document.title = texts.join()
+  })
+
+  const apiGet = () => {
     fetch("http://localhost", {method: "Get"})
     .then(res => res.json())
     .then(data => {
@@ -29,17 +34,16 @@ export function Test() {
     })
   }
 
-  // 更新された値を使う処理みたいなのが適している？
-  useEffect(() => {
-    document.title = texts.join()
-  })
-
   return (
     <div>
       {/* 再レンダリング */}
-      <button onClick={apiFetch}>
+      <button onClick={apiGet}>
         テキスト追加
       </button>
+
+      <PostsForm />
+      
+
       <ul>
         {texts.map((text, index) => {
           return <li key={index}>{text}</li>
@@ -49,3 +53,25 @@ export function Test() {
   );
 }
 
+function PostsForm() {
+  // TODO：次回、自作APIにPostする機能を追加する
+  // とりあえず、fetchを使う
+  // fetchを使ってPostする
+  const [posts, setPost] = useState("")
+
+  // postで渡す値はjsonのほうがいい？
+  // その場合、バックエンドのcrudの引数を変えないと上手くいかない
+  // まずは自分のではなく、簡単なAPIから試す
+  // httpbinを使って、オウム返しをして正しく動作するか確認する
+  const params = {q: posts}
+  const apiPost = () => {
+    
+  }
+
+  return (
+    <div id="posts">
+      <input type="text" id="posts" value={posts}></input>
+      <button type="submit" onClick="">送信</button>
+    </div>
+  )
+}
