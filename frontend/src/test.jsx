@@ -51,28 +51,21 @@ export function Test() {
 }
 
 function PostsForm() {
-  // TODO：次回、自作APIにPostする機能を追加する
-  // とりあえず、fetchを使う
-  // fetchを使ってPostする
   const [posts, setPost] = useState("")
+  const [val, setVal] = useState("")
 
   // postで渡す値はjsonのほうがいい？
   // その場合、バックエンドのcrudの引数を変えないと上手くいかない
-  // まずは自分のではなく、簡単なAPIから試す
-  // httpbinを使って、オウム返しをして正しく動作するか確認する
   const params = {method: "POST", body : JSON.stringify({q: posts})}
   const apiPost = () => {
     fetch("https://httpbin.org/post", params)
     .then(response => response.json())
     .then(data => {
-      setPost(data.q + ":test")
+      setPost(data.json.q + val)
+      setVal("")
     })
   }
   
-  // 処理の内容をわかりやすくするために以下のStateを追加
-  // TODO：fetchPostで返される値がよくわかっていないのでまずはbodyに入れる値があっているのかどうか確認する
-  const [val, setVal] = useState("")
-
   return (
     <div id="posts">
       <input type="text" id="posts" value={val} onChange={(event) => setVal(event.target.value)}></input>
