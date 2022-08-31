@@ -12,11 +12,6 @@ import React, { useState, useEffect } from "react";
 // import { ExpandLessIcon } from '@mui/icons-material';
 
 // コンポーネント名は常に大文字から開始する
-// TODO：Api呼び出し方法について調べているうちにuseStateやsetStateについて知る必要があるとわかり、
-// コンポーネントから改めて学習中。現在、「state を正しく使用する」まで学習。
-// 次回はそのあとから開始する
-// 関数コンポーネントのほうが推奨っぽい？
-
 
 export function Test() {
   const [texts, setText] = useState([])
@@ -54,21 +49,19 @@ function PostsForm() {
   const [posts, setPost] = useState("")
   const [val, setVal] = useState("")
 
-  // postで渡す値はjsonのほうがいい？
-  // その場合、バックエンドのcrudの引数を変えないと上手くいかない
-  const params = {method: "POST", body : JSON.stringify({q: posts})}
+  const params = {method: "POST", headers:{'Content-Type': 'application/json'}, body : JSON.stringify({q: posts})}
   const apiPost = () => {
-    fetch("https://httpbin.org/post", params)
+    fetch("http://localhost/test", params)
     .then(response => response.json())
     .then(data => {
-      setPost(data.json.q + val)
+      setPost(data.q + val)
       setVal("")
     })
   }
   
   return (
     <div id="posts">
-      <input type="text" id="posts" value={val} onChange={(event) => setVal(event.target.value)}></input>
+      <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input>
       <button type="submit" onClick={apiPost}>送信</button>
       <p>{posts}</p>
     </div>
