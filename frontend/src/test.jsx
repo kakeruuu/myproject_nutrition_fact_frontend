@@ -31,7 +31,6 @@ export function Test() {
 
   return (
     <div>
-      {/* 再レンダリング */}
       <button onClick={apiGet}>
         テキスト追加
       </button>
@@ -46,15 +45,23 @@ export function Test() {
 }
 
 function PostsForm() {
-  const [posts, setPost] = useState("")
+  const [posts, setPost] = useState([])
   const [val, setVal] = useState("")
 
-  const params = {method: "POST", headers:{'Content-Type': 'application/json'}, body : JSON.stringify({q: posts})}
+  const params = {method: "POST",
+                  headers:{'Content-Type': 'application/json'},
+                  body : JSON.stringify({query: val})}
+
+  // リクエストボディの値とschemasのBaseModelのデータ型とデータ名を比較している
+  // つまりリクエストボディの値とschemasのクラスのデータ型を一致させなければならない
+  // fastapiのcrudやroute上での変数はわかれば何でもいい。
   const apiPost = () => {
-    fetch("http://localhost/test", params)
+    // searchから帰ってくる値はリスト
+    fetch("http://localhost/search", params)
     .then(response => response.json())
     .then(data => {
-      setPost(data.q + val)
+      // 空のリストにリストの値のみをすべて代入する
+      setPost(data)
       setVal("")
     })
   }
@@ -63,7 +70,11 @@ function PostsForm() {
     <div id="posts">
       <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input>
       <button type="submit" onClick={apiPost}>送信</button>
-      <p>{posts}</p>
+      <ul>
+        {posts.map((post, index) => {
+          return <li key={index} id={post.NutritionFact.id}>{post.NutritionFact.food_name}</li>
+        })}
+      </ul>
     </div>
   )
 }
