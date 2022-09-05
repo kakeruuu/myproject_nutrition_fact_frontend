@@ -52,29 +52,47 @@ function PostsForm() {
                   headers:{'Content-Type': 'application/json'},
                   body : JSON.stringify({query: val})}
 
-  // リクエストボディの値とschemasのBaseModelのデータ型とデータ名を比較している
-  // つまりリクエストボディの値とschemasのクラスのデータ型を一致させなければならない
-  // fastapiのcrudやroute上での変数はわかれば何でもいい。
   const apiPost = () => {
     // searchから帰ってくる値はリスト
     fetch("http://localhost/search", params)
     .then(response => response.json())
     .then(data => {
-      // 空のリストにリストの値のみをすべて代入する
       setPost(data)
       setVal("")
     })
   }
-  
+
+  // TODO：次回検索ワードごとに該当foodを分ける。または、リストをセレクトボックスのようにして成分を知りたい食材をチェックできるようにする。
+  // TODO：追加したclassのキーワード名から返り値のリストの要素をキーワード毎に分類分けする。
   return (
     <div id="posts">
       <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input>
       <button type="submit" onClick={apiPost}>送信</button>
-      <ul>
-        {posts.map((post, index) => {
-          return <li key={index} id={post.NutritionFact.id}>{post.NutritionFact.food_name}</li>
-        })}
-      </ul>
+      <FoodList posts={posts}/>
     </div>
   )
 }
+// backend返り値を辞書型に変えた影響で下記の関数が使えない。
+// TODO：辞書を繰り返してタグの配列を返す形に変える
+function FoodList({posts}){
+  const keys = Object.keys(posts);
+  // const foods = posts[k].map((p, idx) => {
+  //     return <li key={idx}>{p.food_name}</li>
+  //   })
+  
+
+  return (
+    <div>
+      {keys.map((k, i) => {
+        return <ul key={i}>
+                  <p>{k}</p>
+                  {posts[k].map((p, idx) => {
+                    return <li key={idx}>{p.food_name}</li>
+                  })}
+               </ul>
+      })}
+    </div>
+  )
+
+}
+  
