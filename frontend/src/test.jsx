@@ -63,7 +63,6 @@ function PostsForm() {
   }
 
   // TODO：次回検索ワードごとに該当foodを分ける。または、リストをセレクトボックスのようにして成分を知りたい食材をチェックできるようにする。
-  // TODO：追加したclassのキーワード名から返り値のリストの要素をキーワード毎に分類分けする。
   return (
     <div id="posts">
       <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input>
