@@ -62,7 +62,6 @@ function PostsForm() {
     })
   }
 
-  // TODO：次回検索ワードごとに該当foodを分ける。または、リストをセレクトボックスのようにして成分を知りたい食材をチェックできるようにする。
   return (
     <div id="posts">
       <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input>
@@ -71,15 +70,15 @@ function PostsForm() {
     </div>
   )
 }
-// backend返り値を辞書型に変えた影響で下記の関数が使えない。
-// TODO：辞書を繰り返してタグの配列を返す形に変える
+
 function FoodList({posts}){
   const keys = Object.keys(posts);
   // const foods = posts[k].map((p, idx) => {
   //     return <li key={idx}>{p.food_name}</li>
   //   })
-  
 
+  // TODO:<li>で出力される値をクリックできる要素に変更する
+  // TODO:keys.mapのreturnの値を変数にまとめる
   return (
     <div>
       {keys.map((k, i) => {
