@@ -4,7 +4,7 @@ ENV CHOKIDAR_USEPOLLING=true
 
 WORKDIR /project/app
 # npm install @mui/icons-material @mui/material @emotion/react @emotion/styledでのビルドは未テスト
-RUN npx create-react-app myapp && \
+RUN npx create-react-app myapp --template typescript && \
     cd myapp && \
     npm install axios && \
     npm install @mui/icons-material @mui/material @emotion/react @emotion/styled

@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 // コンポーネント名は常に大文字から開始する
 
 export function Test() {
-  const [texts, setText] = useState([])
+  const [texts, setText] = useState<any[]>([]);
   
   // 更新された値を使う処理みたいなのが適している？
   useEffect(() => {
@@ -71,7 +71,7 @@ function PostsForm() {
   )
 }
 
-function FoodList({posts}){
+function FoodList({posts}): any{
   const keys = Object.keys(posts);
   // const foods = posts[k].map((p, idx) => {
   //     return <li key={idx}>{p.food_name}</li>
@@ -84,7 +84,7 @@ function FoodList({posts}){
       {keys.map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {posts[k].map((p, idx) => {
+                  {posts[k].map((p: { food_name: any; }, idx: any) => {
                     return <li key={idx}>{p.food_name}</li>
                   })}
                </ul>
@@ -93,4 +93,3 @@ function FoodList({posts}){
   )
 
 }
-  
