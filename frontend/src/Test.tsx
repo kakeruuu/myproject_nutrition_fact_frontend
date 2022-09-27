@@ -45,7 +45,7 @@ export function Test() {
 }
 
 function PostsForm() {
-  const [posts, setPost] = useState([])
+  const [posts, setPost] = useState<any[]>([])
   const [val, setVal] = useState("")
 
   const params = {method: "POST",
@@ -71,7 +71,7 @@ function PostsForm() {
   )
 }
 
-function FoodList({posts}): any{
+function FoodList({posts}: {posts: any}){
   const keys = Object.keys(posts);
   // const foods = posts[k].map((p, idx) => {
   //     return <li key={idx}>{p.food_name}</li>
@@ -84,7 +84,7 @@ function FoodList({posts}): any{
       {keys.map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {posts[k].map((p: { food_name: any; }, idx: any) => {
+                  {posts[k].map((p: { food_name: string; }, idx: any) => {
                     return <li key={idx}>{p.food_name}</li>
                   })}
                </ul>
@@ -93,3 +93,5 @@ function FoodList({posts}): any{
   )
 
 }
+
+// TODO:any型のものをできるだけ特定の方に変更する。また、型の種類について調べる。
