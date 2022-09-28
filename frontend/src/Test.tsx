@@ -73,19 +73,42 @@ function PostsForm() {
 
 function FoodList({posts}: {posts: any}){
   const keys = Object.keys(posts);
+  const [foodIds, setFoodId] = useState<number[]>([])
+
   // const foods = posts[k].map((p, idx) => {
   //     return <li key={idx}>{p.food_name}</li>
   //   })
 
   // TODO:<li>で出力される値をクリックできる要素に変更する
+  // テキストをクリックするとイベントが起きて、StateにPostするための値が保存されるみたいな？
+  // そうするとliの要素にイベントを追加する必要がある？
+  // 1.<li>をクリックできる要素にする
+  // 2.<li>にイベントトリガーを付ける
+  // 3.イベントトリガーで値をStateに保存できるようにする
+  // 4.stateに保存した値をPostできるようにする
   // TODO:keys.mapのreturnの値を変数にまとめる
+
+  // <li>がクリックされるとその値を出力する
+  const addFoodIds = (e: any, id: number) => {
+    // MEMO：同じ値をクリックしたら削除のほうが親切
+    // MEMO：アラートではなく、UIが直接変わって配列が削除されたことが明示的にわかる方がいいかも
+    if (!foodIds.includes(id)) {
+      setFoodId([...foodIds, id])
+    } else {
+      const index = foodIds.indexOf(id)
+      foodIds.splice(index,1)
+      alert("同IDを削除しました。")
+    } 
+  }
+
   return (
     <div>
       {keys.map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {posts[k].map((p: { food_name: string; }, idx: any) => {
-                    return <li key={idx}>{p.food_name}</li>
+                  {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
+                    // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
+                    return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
                   })}
                </ul>
       })}
