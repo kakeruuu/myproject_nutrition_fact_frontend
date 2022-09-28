@@ -46,7 +46,7 @@ export function Test() {
 
 function PostsForm() {
   const [posts, setPost] = useState<any[]>([])
-  const [val, setVal] = useState("")
+  const [val, setVal] = useState<string>("")
 
   const params = {method: "POST",
                   headers:{'Content-Type': 'application/json'},
@@ -74,7 +74,7 @@ function PostsForm() {
 function FoodList({posts}: {posts: any}){
   const keys = Object.keys(posts);
   const [foodIds, setFoodId] = useState<number[]>([])
-
+  console.log(posts)
   // const foods = posts[k].map((p, idx) => {
   //     return <li key={idx}>{p.food_name}</li>
   //   })
@@ -97,8 +97,20 @@ function FoodList({posts}: {posts: any}){
     } else {
       const index = foodIds.indexOf(id)
       foodIds.splice(index,1)
-      alert("同IDを削除しました。")
-    } 
+    }
+  }
+
+  // 次回以下のコードをテストする
+  // クリックされたItemの値だけ内容が表示されればいい
+  const postFoodIds = (e: any, ids: number[]) => {
+    const selectFood = keys.map((key: string) => {
+      posts[key].map(function(p: any){
+        if (ids.includes(p.id)){
+          return p
+        }
+      })
+    })
+    console.log(selectFood)
   }
 
   return (
@@ -112,9 +124,11 @@ function FoodList({posts}: {posts: any}){
                   })}
                </ul>
       })}
+      {/* <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input> */}
+      <button type="submit" onClick={(e: any) => postFoodIds(e, foodIds)}>送信</button>
     </div>
   )
 
 }
 
-// TODO:any型のものをできるだけ特定の方に変更する。また、型の種類について調べる。
+// TODO：テストについて学ぶ
