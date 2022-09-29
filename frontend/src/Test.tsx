@@ -73,59 +73,81 @@ function PostsForm() {
 
 function FoodList({posts}: {posts: any}){
   const keys = Object.keys(posts);
-  const [foodIds, setFoodId] = useState<number[]>([])
-  console.log(posts)
-  // const foods = posts[k].map((p, idx) => {
-  //     return <li key={idx}>{p.food_name}</li>
-  //   })
-
-  // TODO:<li>で出力される値をクリックできる要素に変更する
+  const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
+  const [filteringFoodIds, setFilteringFoodId] = useState<any[]>([])
+  const [switchVisible, setSwitchVisible] = useState<boolean>(true)
   // テキストをクリックするとイベントが起きて、StateにPostするための値が保存されるみたいな？
   // そうするとliの要素にイベントを追加する必要がある？
   // 1.<li>をクリックできる要素にする
   // 2.<li>にイベントトリガーを付ける
   // 3.イベントトリガーで値をStateに保存できるようにする
-  // 4.stateに保存した値をPostできるようにする
-  // TODO:keys.mapのreturnの値を変数にまとめる
+  // 4.Stateに保存したfoodIdsを利用して表示するfoodを絞り込む　→　postFoodIds
 
   // <li>がクリックされるとその値を出力する
   const addFoodIds = (e: any, id: number) => {
-    // MEMO：同じ値をクリックしたら削除のほうが親切
     // MEMO：アラートではなく、UIが直接変わって配列が削除されたことが明示的にわかる方がいいかも
-    if (!foodIds.includes(id)) {
-      setFoodId([...foodIds, id])
+    if (!userSelectFoodIds.includes(id)) {
+      setUserSelectFoodIds([...userSelectFoodIds, id])
     } else {
-      const index = foodIds.indexOf(id)
-      foodIds.splice(index,1)
+      const index = userSelectFoodIds.indexOf(id)
+      userSelectFoodIds.splice(index,1)
     }
-  }
+  };
 
-  // 次回以下のコードをテストする
-  // クリックされたItemの値だけ内容が表示されればいい
-  const postFoodIds = (e: any, ids: number[]) => {
-    const selectFood = keys.map((key: string) => {
-      posts[key].map(function(p: any){
-        if (ids.includes(p.id)){
-          return p
-        }
-      })
-    })
-    console.log(selectFood)
-  }
+  // postからユーザーが選択したfoodIdのみ抽出する
+  const filterFoodIds = (e: any, ids: number[]) => {
+    setSwitchVisible(false)
+    const tmpList = keys.map((k) => 
+      // MEMO:APIの処理でPostの値がすべて文字列になっている。
+      // TODO:postの要素の型付け方法を考える
+      posts[k].filter((p: { id: any; }) => ids.includes(p.id))
+    )
+    setFilteringFoodId([...filteringFoodIds, ...tmpList])
+  };
 
+  const switchFoodListVisible = (switchVisibleBool: boolean) => {
+    if (switchVisibleBool) {
+      return <div></div>
+    } else {
+      // TODO：filteringFoodIdsの表示方法をどうするか考える。
+      // 
+      console.log("成功パターン")
+      console.log(filteringFoodIds)
+      // [[{id: "677", food_name: "test"....},....], [{}]]
+      // return filteringFoodIds.map((foodArray) => {
+      //   foodArray.map((foodsObject, ) => {
+      //     Object.keys(foodsObject).map((key, idx) => {
+      //       return <li key={idx}>
+      //               {foodsObject[key]}
+      //              </li>
+      //     })
+      //   })
+      // })
+      // return
+    }
+  };
+
+  
   return (
     <div>
-      {keys.map((k, i) => {
-        return <ul key={i}>
-                  <p>{k}</p>
-                  {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
-                    // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
-                    return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
-                  })}
-               </ul>
-      })}
+      <div className="foodList" style={{ visibility: switchVisible ? "visible" : "hidden" }}>
+        {keys.map((k, i) => {
+          return <ul key={i}>
+                    <p>{k}</p>
+                    {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
+                      // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
+                      return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
+                    })}
+                 </ul>
+        })}
+      </div>
       {/* <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input> */}
-      <button type="submit" onClick={(e: any) => postFoodIds(e, foodIds)}>送信</button>
+      {/* 1.foodListクラスを非表示にする → おｋ*/}
+      {/* 2.filterFoodIdsでfilterをかけたIdsを表示する */}
+      <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
+      <div className="filteringFoodList">
+        {switchFoodListVisible(switchVisible)}
+      </div>
     </div>
   )
 
