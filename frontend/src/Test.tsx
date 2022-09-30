@@ -63,7 +63,7 @@ function PostsForm() {
   }
 
   return (
-    <div id="posts">
+    <div className="posts">
       <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input>
       <button type="submit" onClick={apiPost}>送信</button>
       <FoodList posts={posts}/>
@@ -101,56 +101,46 @@ function FoodList({posts}: {posts: any}){
       // MEMO:APIの処理でPostの値がすべて文字列になっている。
       // TODO:postの要素の型付け方法を考える
       posts[k].filter((p: { id: any; }) => ids.includes(p.id))
-    )
+    ).flat()
     setFilteringFoodId([...filteringFoodIds, ...tmpList])
   };
 
+
   const switchFoodListVisible = (switchVisibleBool: boolean) => {
     if (switchVisibleBool) {
-      return <div></div>
+      return keys.map((k, i) => {
+        return <ul key={i}>
+                  <p>{k}</p>
+                  {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
+                    // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
+                    return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
+                  })}
+               </ul>
+        })
     } else {
-      // TODO：filteringFoodIdsの表示方法をどうするか考える。
-      // 
-      console.log("成功パターン")
-      console.log(filteringFoodIds)
-      // [[{id: "677", food_name: "test"....},....], [{}]]
-      // return filteringFoodIds.map((foodArray) => {
-      //   foodArray.map((foodsObject, ) => {
-      //     Object.keys(foodsObject).map((key, idx) => {
-      //       return <li key={idx}>
-      //               {foodsObject[key]}
-      //              </li>
-      //     })
-      //   })
-      // })
-      // return
+      // 1 [[{id: "677", food_name: "test"....},....], [{}]]
+      // 2 [{id: "677", food_name: "test"....},....,....] → 現在のfilteringFoodIds 配列が深くなった処理が複雑になったため。
+      // 結局,<ul>かつ表示するキーを厳選するなら、1の方がいい？
+      return filteringFoodIds.map((foodsObject) => {
+        return Object.keys(foodsObject).map((key, idx) => {
+          return <li key={idx}>
+                  {key + " : " + foodsObject[key]}
+                 </li>
+          })
+        })
     }
   };
 
   
   return (
     <div>
-      <div className="foodList" style={{ visibility: switchVisible ? "visible" : "hidden" }}>
-        {keys.map((k, i) => {
-          return <ul key={i}>
-                    <p>{k}</p>
-                    {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
-                      // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
-                      return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
-                    })}
-                 </ul>
-        })}
-      </div>
-      {/* <input type="text" id="postBox" value={val} onChange={(event) => setVal(event.target.value)}></input> */}
-      {/* 1.foodListクラスを非表示にする → おｋ*/}
-      {/* 2.filterFoodIdsでfilterをかけたIdsを表示する */}
-      <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
-      <div className="filteringFoodList">
+      {/* 今の状態だとボタンの下にチェックしたlistが表示されてしまうので、className="foodList"にswitchFoodListVisibleを持ってくる */}
+      <div className="foodList">
         {switchFoodListVisible(switchVisible)}
       </div>
+      <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
     </div>
   )
-
 }
 
 // TODO：テストについて学ぶ
