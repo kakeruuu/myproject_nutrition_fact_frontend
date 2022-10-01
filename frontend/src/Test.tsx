@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FoodList } from "./FoodList";
 // import Accordion from '@mui/material/Accordion';
 // import AccordionSummary from '@mui/material/AccordionSummary';
 // import AccordionDetails from '@mui/material/AccordionDetails';
@@ -71,76 +72,5 @@ function PostsForm() {
   )
 }
 
-function FoodList({posts}: {posts: any}){
-  const keys = Object.keys(posts);
-  const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
-  const [filteringFoodIds, setFilteringFoodId] = useState<any[]>([])
-  const [switchVisible, setSwitchVisible] = useState<boolean>(true)
-  // テキストをクリックするとイベントが起きて、StateにPostするための値が保存されるみたいな？
-  // そうするとliの要素にイベントを追加する必要がある？
-  // 1.<li>をクリックできる要素にする
-  // 2.<li>にイベントトリガーを付ける
-  // 3.イベントトリガーで値をStateに保存できるようにする
-  // 4.Stateに保存したfoodIdsを利用して表示するfoodを絞り込む　→　postFoodIds
-
-  // <li>がクリックされるとその値を出力する
-  const addFoodIds = (e: any, id: number) => {
-    // MEMO：アラートではなく、UIが直接変わって配列が削除されたことが明示的にわかる方がいいかも
-    if (!userSelectFoodIds.includes(id)) {
-      setUserSelectFoodIds([...userSelectFoodIds, id])
-    } else {
-      const index = userSelectFoodIds.indexOf(id)
-      userSelectFoodIds.splice(index,1)
-    }
-  };
-
-  // postからユーザーが選択したfoodIdのみ抽出する
-  const filterFoodIds = (e: any, ids: number[]) => {
-    setSwitchVisible(false)
-    const tmpList = keys.map((k) => 
-      // MEMO:APIの処理でPostの値がすべて文字列になっている。
-      // TODO:postの要素の型付け方法を考える
-      posts[k].filter((p: { id: any; }) => ids.includes(p.id))
-    ).flat()
-    setFilteringFoodId([...filteringFoodIds, ...tmpList])
-  };
-
-
-  const switchFoodListVisible = (switchVisibleBool: boolean) => {
-    if (switchVisibleBool) {
-      return keys.map((k, i) => {
-        return <ul key={i}>
-                  <p>{k}</p>
-                  {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
-                    // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
-                    return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
-                  })}
-               </ul>
-        })
-    } else {
-      // 1 [[{id: "677", food_name: "test"....},....], [{}]]
-      // 2 [{id: "677", food_name: "test"....},....,....] → 現在のfilteringFoodIds 配列が深くなった処理が複雑になったため。
-      // 結局,<ul>かつ表示するキーを厳選するなら、1の方がいい？
-      return filteringFoodIds.map((foodsObject) => {
-        return Object.keys(foodsObject).map((key, idx) => {
-          return <li key={idx}>
-                  {key + " : " + foodsObject[key]}
-                 </li>
-          })
-        })
-    }
-  };
-
-  
-  return (
-    <div>
-      {/* 今の状態だとボタンの下にチェックしたlistが表示されてしまうので、className="foodList"にswitchFoodListVisibleを持ってくる */}
-      <div className="foodList">
-        {switchFoodListVisible(switchVisible)}
-      </div>
-      <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
-    </div>
-  )
-}
 
 // TODO：テストについて学ぶ
