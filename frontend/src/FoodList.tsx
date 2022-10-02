@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export function FoodList({posts}: {posts: any}){
+  // console.log(posts)
   const keys = Object.keys(posts);
   const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
   const [filteringFoodIds, setFilteringFoodId] = useState<object>({})
@@ -20,25 +21,15 @@ export function FoodList({posts}: {posts: any}){
   // postからユーザーが選択したfoodIdのみ抽出する
   const filterFoodIds = (e: any, userSelectids: number[]) => {
     setSwitchVisible(false)
-    // この処理だとPostsのキー内に存在してユーザーが選択したFoodListの中にはない場合、空の配列が入っているObjectができてしまう？
+    // この処理だとPostsのキー内に存在してユーザーが選択したFoodListの中にはない値がある場合、空の配列が入っているObjectができてしまう？
     // tmpObj = {"砂糖": [{id: 777....},{....}], "にんじん": []} →　にんじんは空の配列しか入っていない
     let tmpObj: {[key: string]: Array<object>} = {}
     keys.map((k: string) => {
-      return tmpObj[k] = []
+      return tmpObj[k] = posts[k].filter((p: { id: any; }) => userSelectids.includes(p.id))
     })
-    keys.map((k: string) => 
-      // MEMO:APIの処理でPostの値がすべて文字列になっている。
-      // TODO:postの要素の型付け方法を考える
-      // {"砂糖": [[{"id": "276",...}],"にんじん": [[{"id": "276",...}]}
-      tmpObj[k].push(posts[k].filter((p: { id: any; }) => userSelectids.includes(p.id)))
-    )
-    // 次回：tmpObj内の配列の深さを一つ浅くする
-    Object.keys(tmpObj).map((k) => {
-      return tmpObj[k].flat(2)
-    })
-    console.log(tmpObj)
-    setFilteringFoodId({...filteringFoodIds, ...tmpObj})
+    setFilteringFoodId(tmpObj)
     // objectが代入できていない
+    console.log("filteringFoodIdsの値は")
     console.log(filteringFoodIds)
   };
 
