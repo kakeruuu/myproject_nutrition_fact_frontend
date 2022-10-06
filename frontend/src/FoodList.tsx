@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 export function FoodList({posts}: {posts: any}){
-  // console.log(posts)
   const keys = Object.keys(posts);
   const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
   const [filteringFoodIds, setFilteringFoodId] = useState<object>({})
@@ -27,10 +26,7 @@ export function FoodList({posts}: {posts: any}){
     keys.map((k: string) => {
       return tmpObj[k] = posts[k].filter((p: { id: any; }) => userSelectids.includes(p.id))
     })
-    setFilteringFoodId(tmpObj)
-    // objectが代入できていない
-    console.log("filteringFoodIdsの値は")
-    console.log(filteringFoodIds)
+    setFilteringFoodId({...tmpObj})
   };
 
 
@@ -46,6 +42,7 @@ export function FoodList({posts}: {posts: any}){
                 </ul>
         })
     } else {
+      // 次回1と同じ形にしたfilteringFoodIdsを表示する処理を作る
       // 1 [[{id: "677", food_name: "test"....},....], [{}]]
       // 2 [{id: "677", food_name: "test"....},....,....] → 現在のfilteringFoodIds 配列が深くなった処理が複雑になったため。
       // 結局,<ul>かつ表示するキーを厳選するなら、1の方がいい？
@@ -68,7 +65,10 @@ export function FoodList({posts}: {posts: any}){
     }
   };
 
-  
+  function onClickObjCheck(e: any, state: any) {
+    console.log(state)
+  }
+
   return (
     <div>
       {/* 今の状態だとボタンの下にチェックしたlistが表示されてしまうので、className="foodList"にswitchFoodListVisibleを持ってくる */}
@@ -76,6 +76,7 @@ export function FoodList({posts}: {posts: any}){
         {switchFoodListVisible(switchVisible)}
       </div>
       <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
+      <button type="submit" onClick={(e: any) => onClickObjCheck(e, filteringFoodIds)}>filteringFoodIdsの値確認</button>
     </div>
   )
 }
