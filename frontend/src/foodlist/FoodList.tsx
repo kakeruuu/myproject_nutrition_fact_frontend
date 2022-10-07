@@ -1,9 +1,14 @@
 import React, { useState } from "react";
+import { FoodLists } from "./FoodListType"
 
 export function FoodList({posts}: {posts: any}){
   const keys = Object.keys(posts);
   const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
-  const [filteringFoodIds, setFilteringFoodId] = useState<object>({})
+  // MEMO:親コンポーネントのPostsの値を変えるほうがいい？↓
+  // 初期値をPostsの値にすればいい？
+  // オブジェクトの型定義は初期値は必ず指定した型を満たす必要がある↓4－4参照
+  // https://zenn.dev/ogakuzuko/articles/react-typescript-for-beginner
+  const [userSelectFoods, setUserSelectFoods] = useState<object>({})
   const [switchVisible, setSwitchVisible] = useState<boolean>(true)
 
   // <li>がクリックされるとその値を出力する
@@ -26,7 +31,7 @@ export function FoodList({posts}: {posts: any}){
     keys.map((k: string) => {
       return tmpObj[k] = posts[k].filter((p: { id: any; }) => userSelectids.includes(p.id))
     })
-    setFilteringFoodId({...tmpObj})
+    setUserSelectFoods({...tmpObj})
   };
 
 
@@ -35,34 +40,31 @@ export function FoodList({posts}: {posts: any}){
       return keys.map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
+                  {posts[k].map((p: { id: number; food_name: any; }, idx: number) => {
                     // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
                     return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
                   })}
                 </ul>
         })
-    } else {
-      // 次回1と同じ形にしたfilteringFoodIdsを表示する処理を作る
-      // 1 [[{id: "677", food_name: "test"....},....], [{}]]
-      // 2 [{id: "677", food_name: "test"....},....,....] → 現在のfilteringFoodIds 配列が深くなった処理が複雑になったため。
-      // 結局,<ul>かつ表示するキーを厳選するなら、1の方がいい？
-      // 1の内容をPostsと同じ形式に成型すればTrueの時の処理と同じ処理にまとめられる？
-      return Object.keys(filteringFoodIds).map((k, i) => {
-          return <ul key={i}>
-                    <p>{k}</p>
-                    {posts[k].map((p: { id: number, food_name: string; }, idx: number) => {
-                      return <li key={idx}>{p.food_name}</li>
-                    })}
-                  </ul>
-          })
-      // return filteringFoodIds.map((foodsObject) => {
-      //   return Object.keys(foodsObject).map((key, idx) => {
-      //     return <li key={idx}>
-      //             {key + " : " + foodsObject[key]}
-      //             </li>
-      //     })
-      //   })
     }
+    // 次回1と同じ形にしたuserSelectFoodsを表示する処理を作る
+    // 1 [[{id: "677", food_name: "test"....},....], [{}]]
+    // 2 [{id: "677", food_name: "test"....},....,....] → 現在のuserSelectFoods 配列が深くなった処理が複雑になったため。
+    // 結局、<ul>かつ表示するキーを厳選するなら、1の方がいい？
+    // 1の内容をPostsと同じ形式に成型すればTrueの時の処理と同じ処理にまとめられる？
+    return Object.keys(userSelectFoods).map((k, i) => {
+        return <ul key={i}>
+                  <p>{k}</p>
+                  {userSelectFoods[k].map((p: FoodLists, idx: number) => {
+                    return <li key={idx}>
+                            {
+                              // ここにuserSelectFoodsの
+                              p.food_name
+                            }
+                           </li>
+                  })}
+                </ul>
+        })
   };
 
   function onClickObjCheck(e: any, state: any) {
@@ -76,7 +78,7 @@ export function FoodList({posts}: {posts: any}){
         {switchFoodListVisible(switchVisible)}
       </div>
       <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
-      <button type="submit" onClick={(e: any) => onClickObjCheck(e, filteringFoodIds)}>filteringFoodIdsの値確認</button>
+      <button type="submit" onClick={(e: any) => onClickObjCheck(e, switchVisible)}>userSelectFoodsの値確認</button>
     </div>
   )
 }

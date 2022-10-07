@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FoodList } from "./FoodList";
+import { FoodList } from "./foodlist/FoodList";
 // import Accordion from '@mui/material/Accordion';
 // import AccordionSummary from '@mui/material/AccordionSummary';
 // import AccordionDetails from '@mui/material/AccordionDetails';
