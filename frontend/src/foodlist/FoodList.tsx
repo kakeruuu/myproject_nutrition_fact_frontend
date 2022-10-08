@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { FoodLists } from "./FoodListType"
+import { foodLists, foodObject } from "./FoodListType"
 
 export function FoodList({posts}: {posts: any}){
   const keys = Object.keys(posts);
+  const copyPosts: foodLists = JSON.parse(JSON.stringify(posts))
+  
   const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
-  // MEMO:親コンポーネントのPostsの値を変えるほうがいい？↓
-  // 初期値をPostsの値にすればいい？
-  // オブジェクトの型定義は初期値は必ず指定した型を満たす必要がある↓4－4参照
-  // https://zenn.dev/ogakuzuko/articles/react-typescript-for-beginner
-  const [userSelectFoods, setUserSelectFoods] = useState<object>({})
+  // MEMO：userSelectFoodsの変数名は要検討
+  const [userSelectFoods, setUserSelectFoods] = useState<foodLists>(copyPosts)
   const [switchVisible, setSwitchVisible] = useState<boolean>(true)
 
   // <li>がクリックされるとその値を出力する
@@ -16,10 +15,9 @@ export function FoodList({posts}: {posts: any}){
     // TODO：ユーザーが選択したIDと削除されたIDが明示的にわかるように変更する
     if (!userSelectFoodIds.includes(id)) {
       setUserSelectFoodIds([...userSelectFoodIds, id])
-    } else {
-      const index = userSelectFoodIds.indexOf(id)
-      userSelectFoodIds.splice(index,1)
-    }
+    } 
+    const index = userSelectFoodIds.indexOf(id)
+    userSelectFoodIds.splice(index,1)
   };
 
   // postからユーザーが選択したfoodIdのみ抽出する
@@ -27,20 +25,20 @@ export function FoodList({posts}: {posts: any}){
     setSwitchVisible(false)
     // この処理だとPostsのキー内に存在してユーザーが選択したFoodListの中にはない値がある場合、空の配列が入っているObjectができてしまう？
     // tmpObj = {"砂糖": [{id: 777....},{....}], "にんじん": []} →　にんじんは空の配列しか入っていない
-    let tmpObj: {[key: string]: Array<object>} = {}
+    let tmpObj: foodLists = {}
     keys.map((k: string) => {
-      return tmpObj[k] = posts[k].filter((p: { id: any; }) => userSelectids.includes(p.id))
+      return tmpObj[k] = posts[k].filter((p: {id: number}) => userSelectids.includes(p.id))
     })
     setUserSelectFoods({...tmpObj})
   };
 
-
+  // postsとuserSelectFoodsを同一のものにした方が良い？
   const switchFoodListVisible = (switchVisibleBool: boolean) => {
     if (switchVisibleBool) {
       return keys.map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {posts[k].map((p: { id: number; food_name: any; }, idx: number) => {
+                  {posts[k].map((p: { id: number; food_name: string; }, idx: number) => {
                     // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
                     return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
                   })}
@@ -55,13 +53,14 @@ export function FoodList({posts}: {posts: any}){
     return Object.keys(userSelectFoods).map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {userSelectFoods[k].map((p: FoodLists, idx: number) => {
-                    return <li key={idx}>
+                  {userSelectFoods[k].map((p: foodObject, idx: number) => {
+                    return <div key={idx}>
                             {
-                              // ここにuserSelectFoodsの
-                              p.food_name
+                              Object.keys(p).map((p_k: string, p_idx: number) => {
+                                return <li key={p_idx}>{p_k + " = " + p[p_k]}</li>
+                              })
                             }
-                           </li>
+                           </div>
                   })}
                 </ul>
         })

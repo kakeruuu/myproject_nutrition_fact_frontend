@@ -1,5 +1,17 @@
-export type FoodLists = {
-    id: number,
+// 表現したいオブジェクト → {[{}]}
+export type foodLists = {
+    [k: string]: Array<foodObject>
+  }
+
+// export type foodObject = {
+//     [k: string]: string
+// }
+// FoodListsの値がすべてstringで送られてきているので以下の形になっている。
+// しかし、Badkend側のレスポンスの値を変えれば以下のようなデータ型にしなくてよい
+export type foodObject = {
+    // typeはオブジェクトのキーバリューの形式を指定してるだけではないの？
+    [k: string]: string,
+    id: string,
     food_name: string,
     disposal_rate: string,
     energy_KJ: string,
@@ -28,3 +40,4 @@ export type FoodLists = {
     copper: string,
     manganese: string,
 }
+
