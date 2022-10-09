@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FoodList } from "./foodlist/FoodList";
+// import { foodLists, foodObject, postsBase } from "./foodlist/FoodListType";
 // import Accordion from '@mui/material/Accordion';
 // import AccordionSummary from '@mui/material/AccordionSummary';
 // import AccordionDetails from '@mui/material/AccordionDetails';
@@ -12,10 +13,13 @@ import { FoodList } from "./foodlist/FoodList";
 // import { ExpandMore } from '@mui/icons-material';
 // import { ExpandLessIcon } from '@mui/icons-material';
 
-// コンポーネント名は常に大文字から開始する
 
+// コンポーネント名は常に大文字から開始する
+// postsのuseStateを以下で定義してPostsformに渡した方がきれい？
+// http://www.code-magagine.com/?p=13251
 export function Test() {
   const [texts, setText] = useState<any[]>([]);
+  // const [posts, setPost] = useState<foodLists>(postsBase)
   
   // 更新された値を使う処理みたいなのが適している？
   useEffect(() => {

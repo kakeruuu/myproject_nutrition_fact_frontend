@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { foodLists, foodObject } from "./FoodListType"
 
+// TODO:配列内のオブジェクトに対するデータ型の設定でエラーが頻繁に起きているのでデータ型についてもう少し深く学ぶ
 export function FoodList({posts}: {posts: any}){
-  const keys = Object.keys(posts);
+  const keys: string[] = Object.keys(posts);
   const copyPosts: foodLists = JSON.parse(JSON.stringify(posts))
   
   const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
@@ -23,11 +24,11 @@ export function FoodList({posts}: {posts: any}){
   // postからユーザーが選択したfoodIdのみ抽出する
   const filterFoodIds = (e: any, userSelectids: number[]) => {
     setSwitchVisible(false)
-    // この処理だとPostsのキー内に存在してユーザーが選択したFoodListの中にはない値がある場合、空の配列が入っているObjectができてしまう？
-    // tmpObj = {"砂糖": [{id: 777....},{....}], "にんじん": []} →　にんじんは空の配列しか入っていない
     let tmpObj: foodLists = {}
-    keys.map((k: string) => {
-      return tmpObj[k] = posts[k].filter((p: {id: number}) => userSelectids.includes(p.id))
+    let tmpAry: Array<foodObject> = []
+    Object.keys(userSelectFoods).forEach((k: string) => {
+      tmpAry = posts[k].filter((p: {id: number}) => userSelectids.includes(p.id))
+      if (tmpAry.length) {tmpObj[k] = tmpAry}
     })
     setUserSelectFoods({...tmpObj})
   };
@@ -45,7 +46,6 @@ export function FoodList({posts}: {posts: any}){
                 </ul>
         })
     }
-    // 次回1と同じ形にしたuserSelectFoodsを表示する処理を作る
     // 1 [[{id: "677", food_name: "test"....},....], [{}]]
     // 2 [{id: "677", food_name: "test"....},....,....] → 現在のuserSelectFoods 配列が深くなった処理が複雑になったため。
     // 結局、<ul>かつ表示するキーを厳選するなら、1の方がいい？
@@ -53,10 +53,11 @@ export function FoodList({posts}: {posts: any}){
     return Object.keys(userSelectFoods).map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {userSelectFoods[k].map((p: foodObject, idx: number) => {
+                  {/* TODO:pのデータ型を考える */}
+                  {userSelectFoods[k].map((p: any, idx: number) => {
                     return <div key={idx}>
                             {
-                              Object.keys(p).map((p_k: string, p_idx: number) => {
+                              Object.keys(p).map((p_k , p_idx: number) => {
                                 return <li key={p_idx}>{p_k + " = " + p[p_k]}</li>
                               })
                             }
@@ -77,8 +78,7 @@ export function FoodList({posts}: {posts: any}){
         {switchFoodListVisible(switchVisible)}
       </div>
       <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
-      <button type="submit" onClick={(e: any) => onClickObjCheck(e, switchVisible)}>userSelectFoodsの値確認</button>
+      <button type="submit" onClick={(e: any) => onClickObjCheck(e, userSelectFoods)}>userSelectFoodsの値確認</button>
     </div>
   )
 }
-  
