@@ -6,28 +6,29 @@ export function FoodList({posts}: {posts: any}){
   const keys: string[] = Object.keys(posts);
   const copyPosts: foodLists = JSON.parse(JSON.stringify(posts))
   
-  const [userSelectFoodIds, setUserSelectFoodIds] = useState<number[]>([])
+  const [userSelectFoodNames, setUserSelectFoodNames] = useState<string[]>([])
   // MEMO：userSelectFoodsの変数名は要検討
   const [userSelectFoods, setUserSelectFoods] = useState<foodLists>(copyPosts)
   const [switchVisible, setSwitchVisible] = useState<boolean>(true)
 
   // <li>がクリックされるとその値を出力する
-  const addFoodIds = (e: any, id: number) => {
+  const addFoodNames = (e: any, foodName: string) => {
     // TODO：ユーザーが選択したIDと削除されたIDが明示的にわかるように変更する
-    if (!userSelectFoodIds.includes(id)) {
-      setUserSelectFoodIds([...userSelectFoodIds, id])
+    // →再表示させるなら最初からfood_nameで取得したほうがよい？
+    if (!userSelectFoodNames.includes(foodName)) {
+      setUserSelectFoodNames([...userSelectFoodNames, foodName])
     } 
-    const index = userSelectFoodIds.indexOf(id)
-    userSelectFoodIds.splice(index,1)
+    const index = userSelectFoodNames.indexOf(foodName)
+    userSelectFoodNames.splice(index,1)
   };
 
   // postからユーザーが選択したfoodIdのみ抽出する
-  const filterFoodIds = (e: any, userSelectids: number[]) => {
+  const filterFoodIds = (e: any, userSelectName: string[]) => {
     setSwitchVisible(false)
     let tmpObj: foodLists = {}
     let tmpAry: Array<foodObject> = []
     Object.keys(userSelectFoods).forEach((k: string) => {
-      tmpAry = posts[k].filter((p: {id: number}) => userSelectids.includes(p.id))
+      tmpAry = posts[k].filter((p: {food_name: string}) => userSelectName.includes(p.food_name))
       if (tmpAry.length) {tmpObj[k] = tmpAry}
     })
     setUserSelectFoods({...tmpObj})
@@ -39,9 +40,9 @@ export function FoodList({posts}: {posts: any}){
       return keys.map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
-                  {posts[k].map((p: { id: number; food_name: string; }, idx: number) => {
+                  {posts[k].map((p: { food_name: string; }, idx: number) => {
                     // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
-                    return <li key={idx} onClick={(e: any) => addFoodIds(e, p.id)}>{p.food_name}</li>
+                    return <li key={idx} onClick={(e: any) => addFoodNames(e, p.food_name)}>{p.food_name}</li>
                   })}
                 </ul>
         })
@@ -77,7 +78,7 @@ export function FoodList({posts}: {posts: any}){
       <div className="foodList">
         {switchFoodListVisible(switchVisible)}
       </div>
-      <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodIds)}>送信</button>
+      <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodNames)}>送信</button>
       <button type="submit" onClick={(e: any) => onClickObjCheck(e, userSelectFoods)}>userSelectFoodsの値確認</button>
     </div>
   )
