@@ -7,7 +7,10 @@ TODOリスト
 　- 構成に合わせるために関数を汎用性の高いものに変えていく
   - Api用のディレクトリを作る
   - foodList.tsxをどこに置くか考える
-
+  - bulletproof-reactのディレクトリ構成を参考する
+  　https://zenn.dev/meijin/articles/bulletproof-react-is-best-architecture
+    https://zenn.dev/t_keshi/articles/bulletproof-react-2022
+    
 - create-react-app におけるjestテストについて調べる
 
 - loginフォームを別途作成する
