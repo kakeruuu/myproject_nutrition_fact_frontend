@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { foodLists, foodObject } from "./FoodListType"
+import { FoodLists, FoodObject } from "../../../types/foodListType"
 
 // TODO:配列内のオブジェクトに対するデータ型の設定でエラーが頻繁に起きているのでデータ型についてもう少し深く学ぶ
-export function FoodList({posts}: {posts: any}){
-  const keys: string[] = Object.keys(posts);
-  const copyPosts: foodLists = JSON.parse(JSON.stringify(posts))
+export function FoodList({posts}: {posts: any}): JSX.Element{
+  const keys: string[] = Object.keys(posts)
+  const copyPosts: FoodLists = JSON.parse(JSON.stringify(posts))
   
   const [userSelectFoodNames, setUserSelectFoodNames] = useState<string[]>([])
   // MEMO：userSelectFoodsの変数名は要検討
-  const [userSelectFoods, setUserSelectFoods] = useState<foodLists>(copyPosts)
+  const [userSelectFoods, setUserSelectFoods] = useState<FoodLists>(copyPosts)
   const [switchVisible, setSwitchVisible] = useState<boolean>(true)
 
   // <li>がクリックされるとその値を出力する
   const addFoodNames = (e: any, foodName: string) => {
     // TODO：ユーザーが選択したIDと削除されたIDが明示的にわかるように変更する
-    // →再表示させるなら最初からfood_nameで取得したほうがよい？
     if (!userSelectFoodNames.includes(foodName)) {
       setUserSelectFoodNames([...userSelectFoodNames, foodName])
     } 
@@ -25,9 +24,9 @@ export function FoodList({posts}: {posts: any}){
   // postからユーザーが選択したfoodIdのみ抽出する
   const filterFoodIds = (e: any, userSelectName: string[]) => {
     setSwitchVisible(false)
-    let tmpObj: foodLists = {}
-    let tmpAry: Array<foodObject> = []
-    Object.keys(userSelectFoods).forEach((k: string) => {
+    let tmpObj: FoodLists = {}
+    let tmpAry: FoodObject[] = []
+    Object.keys(copyPosts).forEach((k: string) => {
       tmpAry = posts[k].filter((p: {food_name: string}) => userSelectName.includes(p.food_name))
       if (tmpAry.length) {tmpObj[k] = tmpAry}
     })
@@ -37,6 +36,7 @@ export function FoodList({posts}: {posts: any}){
   // postsとuserSelectFoodsを同一のものにした方が良い？
   const switchFoodListVisible = (switchVisibleBool: boolean) => {
     if (switchVisibleBool) {
+      // 
       return keys.map((k, i) => {
         return <ul key={i}>
                   <p>{k}</p>
@@ -57,9 +57,24 @@ export function FoodList({posts}: {posts: any}){
                   {/* TODO:pのデータ型を考える */}
                   {userSelectFoods[k].map((p: any, idx: number) => {
                     return <div key={idx}>
-                            {
-                              Object.keys(p).map((p_k , p_idx: number) => {
-                                return <li key={p_idx}>{p_k + " = " + p[p_k]}</li>
+                            {/* 次回：特定のキーの値のみ返す関数を作成する */}
+                            {/* {
+                              function(){
+                                MEMO：id,classを除いたキーの配列を作成→そのあとキーの配列をもとに(p: any)から値を取り出して<li>にしてreturnする
+                                let tmpAry: string[] = Object.keys(p).filter((p_k , p_idx: number) => {!(["id","class"].includes(p_k))})
+                                let tmpObj: foodObject
+                              }
+                            } */}
+                              
+                              {Object.keys(p).map((p_k , p_idx: number) => {
+                                // if で必要なプロパティのみ返すようにする
+                                // つまりid ,class以外すべて必要
+                                // filterでid,classではないものを返す
+                                // ["id", "class"].includes()
+                                // if (!(p_k==="id" || p_k==="class")){
+                                  return <li key={p_idx}>{p_k + " = " + p[p_k]}</li>
+                                // }
+                                
                               })
                             }
                            </div>
@@ -77,6 +92,14 @@ export function FoodList({posts}: {posts: any}){
       {/* 今の状態だとボタンの下にチェックしたlistが表示されてしまうので、className="foodList"にswitchFoodListVisibleを持ってくる */}
       <div className="foodList">
         {switchFoodListVisible(switchVisible)}
+      </div>
+      <div className="displaySelectFoodIds">
+        {<ul>
+          <div>選択した食材一覧</div>
+          {userSelectFoodNames.map((foodName: string, idx: number) => {
+            return <li key={idx}>{foodName}</li>
+          })}
+        </ul>}
       </div>
       <button type="submit" onClick={(e: any) => filterFoodIds(e, userSelectFoodNames)}>送信</button>
       <button type="submit" onClick={(e: any) => onClickObjCheck(e, userSelectFoods)}>userSelectFoodsの値確認</button>

@@ -1,6 +1,6 @@
 // 表現したいオブジェクト → {[{}]}
-export type foodLists = {
-    [k: string]: Array<foodObject>
+export type FoodLists = {
+    [k: string]: FoodObject[]
   }
 
 
@@ -9,7 +9,7 @@ export type foodLists = {
 // }
 // FoodListsの値がすべてstringで送られてきているので以下の形になっている。
 // しかし、Badkend側のレスポンスの値を変えれば以下のようなデータ型にしなくてよい
-export const postsBase = {
+export const PostsBase = {
   id: "",
   food_name: "",
   disposal_rate: "",
@@ -39,7 +39,7 @@ export const postsBase = {
   copper: "",
   manganese: "",
 }
-export type foodObject = keyof typeof postsBase
+export type FoodObject = keyof typeof PostsBase
 
 // export type foodObject = {
 //     // typeはオブジェクトのキーバリューの形式を指定してるだけではないの？

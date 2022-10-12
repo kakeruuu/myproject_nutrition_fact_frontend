@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FoodList } from "./foodlist/FoodList";
+import { FoodList } from "./foodList/foodList";
 // import { foodLists, foodObject, postsBase } from "./foodlist/FoodListType";
 // import Accordion from '@mui/material/Accordion';
 // import AccordionSummary from '@mui/material/AccordionSummary';
@@ -17,7 +17,7 @@ import { FoodList } from "./foodlist/FoodList";
 // コンポーネント名は常に大文字から開始する
 // postsのuseStateを以下で定義してPostsformに渡した方がきれい？
 // http://www.code-magagine.com/?p=13251
-export function Test() {
+export function App() {
   const [texts, setText] = useState<any[]>([]);
   // const [posts, setPost] = useState<foodLists>(postsBase)
   
