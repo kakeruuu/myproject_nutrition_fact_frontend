@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { FoodLists, FoodObject } from "../../../types/foodListType"
+import { PostsForm } from "./postsForm"
 
-// TODO:配列内のオブジェクトに対するデータ型の設定でエラーが頻繁に起きているのでデータ型についてもう少し深く学ぶ
-export function FoodList({posts}: {posts: any}): JSX.Element{
+// TODO：postsのデータ型を直す
+// TODO：配列内のオブジェクトに対するデータ型の設定でエラーが頻繁に起きているのでデータ型についてもう少し深く学ぶ
+export function FoodList(): JSX.Element{
+  const [posts, setPost] = useState<any[]>([])
   const keys: string[] = Object.keys(posts)
   const copyPosts: FoodLists = JSON.parse(JSON.stringify(posts))
   
@@ -26,7 +29,7 @@ export function FoodList({posts}: {posts: any}): JSX.Element{
     setSwitchVisible(false)
     let tmpObj: FoodLists = {}
     let tmpAry: FoodObject[] = []
-    Object.keys(copyPosts).forEach((k: string) => {
+    Object.keys(copyPosts).forEach((k: any) => {
       tmpAry = posts[k].filter((p: {food_name: string}) => userSelectName.includes(p.food_name))
       if (tmpAry.length) {tmpObj[k] = tmpAry}
     })
@@ -37,7 +40,7 @@ export function FoodList({posts}: {posts: any}): JSX.Element{
   const switchFoodListVisible = (switchVisibleBool: boolean) => {
     if (switchVisibleBool) {
       // 
-      return keys.map((k, i) => {
+      return keys.map((k: any, i: number) => {
         return <ul key={i}>
                   <p>{k}</p>
                   {posts[k].map((p: { food_name: string; }, idx: number) => {
@@ -90,6 +93,7 @@ export function FoodList({posts}: {posts: any}): JSX.Element{
   return (
     <div>
       {/* 今の状態だとボタンの下にチェックしたlistが表示されてしまうので、className="foodList"にswitchFoodListVisibleを持ってくる */}
+      <PostsForm setPost={setPost}/>
       <div className="foodList">
         {switchFoodListVisible(switchVisible)}
       </div>
