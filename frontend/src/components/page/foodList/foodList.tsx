@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { FoodLists, FoodObject } from "../../../types/foodListType"
 import { PostsForm } from "./postsForm"
+import { addStates } from "../../functional/states/addStates"
 
 // TODO：postsのデータ型を直す
 // TODO：配列内のオブジェクトに対するデータ型の設定でエラーが頻繁に起きているのでデータ型についてもう少し深く学ぶ
+// MEMO：stateの受け渡しが上手くいってないので下記サイトを参考にpostsFormの修正を行う
+// https://qiita.com/akifumii/items/ec9fdb9dd7d649c2f3dc
 export function FoodList(): JSX.Element{
   const [posts, setPost] = useState<any[]>([])
   const keys: string[] = Object.keys(posts)
@@ -15,16 +18,24 @@ export function FoodList(): JSX.Element{
   const [switchVisible, setSwitchVisible] = useState<boolean>(true)
 
   // <li>がクリックされるとその値を出力する
-  const addFoodNames = (e: any, foodName: string) => {
-    // TODO：ユーザーが選択したIDと削除されたIDが明示的にわかるように変更する
-    if (!userSelectFoodNames.includes(foodName)) {
-      setUserSelectFoodNames([...userSelectFoodNames, foodName])
-    } 
-    const index = userSelectFoodNames.indexOf(foodName)
-    userSelectFoodNames.splice(index,1)
-  };
+  /*
+  MEMO：
+    stateに特定の値が含まれていなかったらsetStateする。入っていたらspliceで値を削除する
+    stateは<string[]> 検索値は<string>
+    以上の形で見ると、stateの値を増減させる関数として汎用化できる？
+  */
+  // const addFoodNames = (e: any, foodName: string) => {
+  //   // TODO：ユーザーが選択したIDと削除されたIDが明示的にわかるように変更する
+  //   if (!userSelectFoodNames.includes(foodName)) {
+  //     setUserSelectFoodNames([...userSelectFoodNames, foodName])
+  //   } 
+  //   const index = userSelectFoodNames.indexOf(foodName)
+  //   userSelectFoodNames.splice(index,1)
+  // };
+
 
   // postからユーザーが選択したfoodIdのみ抽出する
+
   const filterFoodIds = (e: any, userSelectName: string[]) => {
     setSwitchVisible(false)
     let tmpObj: FoodLists = {}
@@ -45,7 +56,8 @@ export function FoodList(): JSX.Element{
                   <p>{k}</p>
                   {posts[k].map((p: { food_name: string; }, idx: number) => {
                     // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
-                    return <li key={idx} onClick={(e: any) => addFoodNames(e, p.food_name)}>{p.food_name}</li>
+                    // return <li key={idx} onClick={(e: any) => addFoodNames(e, p.food_name)}>{p.food_name}</li>
+                    return <li key={idx} onClick={(e: any) => addStates(userSelectFoodNames, setUserSelectFoodNames, p.food_name)}>{p.food_name}</li>
                   })}
                 </ul>
         })
@@ -92,7 +104,6 @@ export function FoodList(): JSX.Element{
 
   return (
     <div>
-      {/* 今の状態だとボタンの下にチェックしたlistが表示されてしまうので、className="foodList"にswitchFoodListVisibleを持ってくる */}
       <PostsForm setPost={setPost}/>
       <div className="foodList">
         {switchFoodListVisible(switchVisible)}
