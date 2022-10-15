@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { FoodLists, FoodObject, PostsBase } from "../../../types/foodListType"
+import { FoodLists, FoodObject } from "../../../types/foodListType"
 import { PostsForm } from "./postsForm"
 import { addStates } from "../../functional/states/addStates"
 
-// TODO：postsのデータ型を直す
-// TODO：配列内のオブジェクトに対するデータ型の設定でエラーが頻繁に起きているのでデータ型についてもう少し深く学ぶ
-// MEMO：stateの受け渡しが上手くいってないので下記サイトを参考にpostsFormの修正を行う
-// https://qiita.com/akifumii/items/ec9fdb9dd7d649c2f3dc
+
 export function FoodList(): JSX.Element{
-  // postsの初期値はobjectである必要があるよね
   const [posts, setPost] = useState<any>({})
   const updateSetPost = (obj: FoodLists | any): void => setPost(obj)
 
