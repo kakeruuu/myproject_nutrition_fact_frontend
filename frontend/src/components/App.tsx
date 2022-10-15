@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FoodList } from "./page/foodList/foodList";
 
 // import { foodLists, foodObject, postsBase } from "./foodlist/FoodListType";
@@ -24,6 +24,7 @@ export function App() {
   return (
     <div className="App">
       {/* ログイン画面などのページをどのタイミングで表示するかなどの処理もここに書く */}
+      メイン画面
       <FoodList />
     </div>
   );
