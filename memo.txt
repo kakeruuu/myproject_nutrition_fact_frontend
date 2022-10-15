@@ -9,9 +9,14 @@ TODOリスト
   　https://zenn.dev/meijin/articles/bulletproof-react-is-best-architecture
     https://zenn.dev/t_keshi/articles/bulletproof-react-2022
   - setPostを引数にしたときのデータ型をどうするか考える
+    →types内に汎用データ型として記述する方がよい？
   - apiディレクトリ構成をバックエンドのモデルと同じ構成にする
   - postsForm.tsxは汎用的なファイルにできるかもなので、汎用コンポーネント用のディレクトリを作る方がいいかもしれない
-  
+  - EsLintの設定を行う
+  →サバイバルTypeScriptで試してみてから使ってみる
+  - postFoodListの修正
+  - object型を使っている変数をRecord<key, value>に変更する
+  - postのデータ型を型推論で設定させる
     
 - create-react-app におけるjestテストについて調べる
 
