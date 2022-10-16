@@ -17,6 +17,9 @@ TODOリスト
   - postFoodListの修正
   - object型を使っている変数をRecord<key, value>に変更する
   - postのデータ型を型推論で設定させる
+  - FoodListのstateをcreateContextでまとめる
+  - Provider用のディレクトリを作成してグローバルstateを管理しやすくする
+  - Provider用のディレクトリはcompornent直下に作る
     
 - create-react-app におけるjestテストについて調べる
 
