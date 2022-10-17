@@ -14,12 +14,12 @@ TODOリスト
   - postsForm.tsxは汎用的なファイルにできるかもなので、汎用コンポーネント用のディレクトリを作る方がいいかもしれない
   - EsLintの設定を行う
   →サバイバルTypeScriptで試してみてから使ってみる
-  - postFoodListの修正
   - object型を使っている変数をRecord<key, value>に変更する
   - postのデータ型を型推論で設定させる
   - FoodListのstateをcreateContextでまとめる
   - Provider用のディレクトリを作成してグローバルstateを管理しやすくする
   - Provider用のディレクトリはcompornent直下に作る
+  - グローバルである必要がないProviderは各ページに専用tsxファイルを作成する
     
 - create-react-app におけるjestテストについて調べる
 
