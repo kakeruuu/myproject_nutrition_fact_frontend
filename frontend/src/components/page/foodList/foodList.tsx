@@ -6,13 +6,13 @@ import { SwitchFoodListVisible } from "./modules"
 import { addStates } from "../../functional/states/addStates"
 
 type ContextType = {
-  userSelectFoodNames: string[],
-  updateSetUserSelectFoodNames: (newAry: []) => void
+  userSelectFoodNames: string[];
+  updateSetUserSelectFoodNames: (newAry: []) => void;
 }
 // valueに入れる値を定義している
 export const UserSelectFoodNamesContext = createContext({} as ContextType)
 
-export function FoodList(): JSX.Element{
+export const FoodList = () => {
   const [posts, setPost] = useState<any>({})
   const updateSetPost = (obj: FoodLists | any): void => setPost(obj)
 
@@ -95,12 +95,12 @@ export function FoodList(): JSX.Element{
   return (
     <div>
       <PostsForm updateSetPost={updateSetPost}/>
+      <UserSelectFoodNamesContext.Provider value={{userSelectFoodNames, updateSetUserSelectFoodNames}}>
       <div className="foodList">
-        <UserSelectFoodNamesContext.Provider value={{userSelectFoodNames, updateSetUserSelectFoodNames}}>
           {SwitchFoodListVisible(switchVisible, posts)}
-        </UserSelectFoodNamesContext.Provider>
         {/* {switchFoodListVisible(switchVisible)} */}
       </div>
+      </UserSelectFoodNamesContext.Provider>
       <div className="displaySelectFoodIds">
         {<ul>
           <div>選択した食材一覧</div>

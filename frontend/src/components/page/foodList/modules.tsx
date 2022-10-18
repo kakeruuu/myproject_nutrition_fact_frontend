@@ -11,20 +11,8 @@ export const SwitchFoodListVisible = (switchVisibleBool: boolean, ulObj: Record<
   const { userSelectFoodNames, updateSetUserSelectFoodNames } = useContext(UserSelectFoodNamesContext)
   
   if (switchVisibleBool) {
-    return keys.map((k: any, i: number) => {
-      return <ul key={i}>
-                <p>{k}</p>
-                {ulObj[k].map((p: any, idx: number) => {
-                  // TODO：クリック時にクリックしたリストであるということがわかる処理を加えたい。
-                  // return <li key={idx} onClick={(e: any) => addFoodNames(e, p.food_name)}>{p.food_name}</li>
-                  return <li key={idx} onClick={(e: any) => addStates(userSelectFoodNames, updateSetUserSelectFoodNames, p.food_name)}>{p.food_name}</li>
-                })}
-              </ul>
-      })
+    return createUlWithTitle(keys, ulObj, userSelectFoodNames, updateSetUserSelectFoodNames)
   }
-  // [[{id: "677", food_name: "test"....},....], [{}]]
-  // 結局、<ul>かつ表示するキーを厳選するなら、1の方がいい？
-  // 1の内容をPostsと同じ形式に成型すればTrueの時の処理と同じ処理にまとめられる？
   return keys.map((k, i) => {
       return <ul key={i}>
                 <p>{k}</p>
@@ -35,3 +23,18 @@ export const SwitchFoodListVisible = (switchVisibleBool: boolean, ulObj: Record<
               </ul>
       })
 };
+
+const createUlWithTitle = (keys: string[], ulObj: any, states: any, setStates: any) => {
+  return keys.map((k: any, i: number) => {
+    return <ul key={i}>
+              <p>{k}</p>
+              {createLi(k, ulObj, states, setStates)}
+            </ul>
+            })
+}
+
+const createLi = (key: any, ulObj: any, states: any, setStates: any) => {
+  return ulObj[key].map((p: any, idx: number) => {
+    return <li key={idx} onClick={(e: any) => addStates(states, setStates, p.food_name)}>{p.food_name}</li>
+  })
+}
