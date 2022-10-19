@@ -1,16 +1,9 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useContext } from "react";
 import { FoodLists, FoodObject } from "../../../types/foodListType"
 import { PostsForm } from "./postsForm"
 import { SwitchFoodListVisible } from "./modules"
 // import { vitbleTest } from "./modules"
-import { addStates } from "../../functional/states/addStates"
-
-type ContextType = {
-  userSelectFoodNames: string[];
-  updateSetUserSelectFoodNames: (newAry: []) => void;
-}
-// valueに入れる値を定義している
-export const UserSelectFoodNamesContext = createContext({} as ContextType)
+import { UserSelectFoodNamesContext } from "./providers"
 
 export const FoodList = () => {
   const [posts, setPost] = useState<any>({})
@@ -19,9 +12,7 @@ export const FoodList = () => {
   const keys: string[] = Object.keys(posts)
   const copyPosts: FoodLists = JSON.parse(JSON.stringify(posts))
   
-  // MEMO：modules.tsxでも使いたい
-  const [userSelectFoodNames, setUserSelectFoodNames] = useState<string[]>([])
-  const updateSetUserSelectFoodNames = (newAry: []) => setUserSelectFoodNames(newAry)
+  const { userSelectFoodNames, setUserSelectFoodNames } = useContext(UserSelectFoodNamesContext)  
 
   // MEMO：userSelectFoodsの変数名は要検討
   const [userSelectFoods, setUserSelectFoods] = useState<FoodLists>(copyPosts)
@@ -95,12 +86,10 @@ export const FoodList = () => {
   return (
     <div>
       <PostsForm updateSetPost={updateSetPost}/>
-      <UserSelectFoodNamesContext.Provider value={{userSelectFoodNames, updateSetUserSelectFoodNames}}>
       <div className="foodList">
           {SwitchFoodListVisible(switchVisible, posts)}
         {/* {switchFoodListVisible(switchVisible)} */}
       </div>
-      </UserSelectFoodNamesContext.Provider>
       <div className="displaySelectFoodIds">
         {<ul>
           <div>選択した食材一覧</div>

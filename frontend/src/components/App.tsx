@@ -1,5 +1,6 @@
 import React from "react";
 import { FoodList } from "./page/foodList/foodList";
+import { UserSelectFoodNamesProvider } from "./page/foodList/providers"
 
 // import { foodLists, foodObject, postsBase } from "./foodlist/FoodListType";
 // import Accordion from '@mui/material/Accordion';
@@ -22,12 +23,12 @@ import { FoodList } from "./page/foodList/foodList";
 export function App() {
 
   return (
-    <div className="App">
+    <UserSelectFoodNamesProvider>
+      <div className="App">
       {/* ログイン画面などのページをどのタイミングで表示するかなどの処理もここに書く */}
-      メイン画面
-      <FoodList />
-    </div>
+        メイン画面
+        <FoodList />
+      </div>
+    </UserSelectFoodNamesProvider>
   );
 }
-
-// TODO：テストについて学ぶ
