@@ -1,62 +1,105 @@
-import React, { useContext } from "react";
-import { UserSelectFoodNamesContext } from "./providers"
+import { Rectangle } from "@mui/icons-material";
+import React from "react";
 import { addStates } from "../../functional/states/addStates"
 
-// 状態変化を適切に考えないとおかしくなる
-// propsにしようと思ったけど、呼び出し側でコンポーネント呼び出しになっていない
-// switchVisibleBool: boolean, postObj: Record<string, string[]>, state: any, setState: any
-// この状態だとpostsとuserSelectFoodNamesが空のためエラーを引き起こす可能性がある
-export const SwitchFoodListVisible = ({switchProps}: any) => {
-  // const keys = Object.keys(props.postObj)
-  const keys = Object.keys(switchProps.switchVisible)
-  // 明示的にTypeを設定しないといけない。
-  console.log(switchProps.switchVisible)
-  console.log(switchProps.posts)
-  return <div>test</div>
-  // if (switchVisibleBool) {
-  //   return createUlWithTitle(keys, postObj, state, setState, switchVisibleBool)
-  // }
-  // return createUlWithTitle(keys, postObj, state, setState, switchVisibleBool)
+
+// TODO：変数名、プロパティ名が絶望的にわかりづらいから修正する
+// li要素がクリックされるたびにレンダリングされてしまっている
+export const FoodListVisible = ({switchProps}: any) => {
+  // const keys = Object.keys(props.foodListObj)
+  const {switchVisible, posts, states, setStates} = switchProps
+
+  console.log(switchVisible)
+  console.log(posts)
+
+  return (
+    <>
+      {/* MEMO:あえてpostsが空の時は値は返さないみたいな処理を書いた方がいい？ */}
+      {Object.keys(posts).map((postsClasskey: any, idx: number) => {
+        return (
+          <ul key={idx}>
+            <div>{postsClasskey}</div>
+            {switchVisible ?
+              // postsClasskey: 砂糖、人参など foodListAry: foodObject[]→[{id: "", food_name: "", ...}, {id: "", food_name: "", ...}]
+              <FoodNameList liProps={{foodListAry: posts[postsClasskey], states: states, setStates: setStates}}/>:
+              <FoodDetailList liProps={{foodListAry: posts[postsClasskey]}}/>
+            }
+          </ul>
+        )
+      })}
+    </>
+  )
 };
 
 // MEMO:li要素作成関数から呼び出すラッパーとして定義できないだろうか？
-const createUlWithTitle = (keys: string[], postObj: any, states: any = undefined, setStates: any = undefined, switchVisibleBool: boolean) => {
-  function switchLi(k: string, postObj: any, states: any, setStates: any) {
-    if (switchVisibleBool) {
-      return createLi(k, postObj, states, setStates)
-    }
-    return createUserSelectLi(k, postObj)
-  }
+// const CreateUlWithTitle = ({ulProps}: any) => {
+  
+//   const {switchVisible, posts, states, setStates} = ulProps
 
-  return keys.map((k: any, i: number) => {
-    return (
-      <ul key={i}>
-        <p>{k}</p>
-        {
-          // ここでもスイッチしてるのおかしい
-          switchLi(k, postObj, states, setStates)
-        }
-      </ul>
-    )
-  })
-}
+//   return (
+//     <div className="foodListBox">
+//       {Object.keys(posts).map((postsClasskey: any, idx: number) => {
+//         return (
+//           <ul key={idx}>
+//             <div>{postsClasskey}</div>
+//             {switchVisible ?
+//               // postsClasskey: 砂糖、人参など foodListAry: foodObject[]→[{id: "", food_name: "", ...}, {id: "", food_name: "", ...}]
+//               <FoodNameList liProps={{foodListAry: posts[postsClasskey], states: states, setStates: setStates}}/>:
+//               <FoodDetailList liProps={{foodListAry: posts[postsClasskey]}}/>
+//             }
+//           </ul>
+//         )
+//       })}
+//     </div>
+//   )
+// }
 
-// ここでuseContextを呼び出すとエラーが出る↓
-// Warning: React has detected a change in the order of Hooks called by FoodList. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks:
-const createLi = (key: any, postObj: any, states: any, setStates: any) => {
-  return postObj[key].map((p: any, idx: number) => {
-    return <li key={idx} onClick={(e: any) => addStates(states, setStates, p.food_name)}>{p.food_name}</li>
-  })
+// foodDetailObj={id: "", food_name: "", ...}
+// foodListAry: foodObject[]→[{id: "", food_name: "", ...}, {id: "", food_name: "", ...}]
+const FoodNameList = ({liProps}: any) => {
+  console.log(liProps.foodListAry)
+  const {foodListAry, states, setStates} = liProps
+
+  return (
+    <div className="foodNameList">
+      {foodListAry.map((foodDetailObj: any, idx: number) => {
+        return <li key={idx} onClick={(e: any) => addStates(states, setStates, foodDetailObj.food_name)}>{foodDetailObj.food_name}</li>})
+      }
+    </div>
+  )
 }
 
 // userが選択したfood_nameの成分を表示する機能を表現した関数を作る
-// FIX:postsの状態を変化させた後に以下の関数で食材一覧が表示できないを直す
-// →表示されるタイミングの問題？
-// →渡されている値は正常だった。
-const createUserSelectLi = (key: any, postObj: any) => {
-  console.log("postObj= " + JSON.stringify(postObj))
-  console.log("key=" + String(key) + " type=" + typeof(key))
-  return postObj[key].map((p: any, idx: number) => {
-    return <li key={idx}>{p[key]}</li>
-  }) 
+const FoodDetailList = ({liProps}: any) => {
+
+  const { foodListAry } = liProps
+
+  const filterDetailObj = (foodDetailObj: Record<string, string>) => {
+    const detailObjKeys = Object.keys(foodDetailObj)
+    const exclusionKeys = ["id", "food_name", "class"]
+    const filteringDetailObjKeys = detailObjKeys.filter((key) => {return !(exclusionKeys.includes(key))})
+
+    return filteringDetailObjKeys.map((key, idx) => {
+      return (
+        <li key={idx}>{foodDetailObj[key]}</li>
+      )
+    })
+  }
+
+  const testObj = foodListAry[0]
+  console.log(filterDetailObj(testObj))
+  return (
+    <div className="foodDetailList">
+      {foodListAry.map((foodDetailObj: any, idx: number) => {
+        return (
+            <React.Fragment key={idx}>
+              {foodDetailObj.food_name}
+              {filterDetailObj(foodDetailObj)}
+            </React.Fragment>
+          )
+        })
+      }
+    </div>
+  ) 
 }
+
