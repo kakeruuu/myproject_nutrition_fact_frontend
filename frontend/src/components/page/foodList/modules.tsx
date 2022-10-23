@@ -1,26 +1,82 @@
-import { Rectangle } from "@mui/icons-material";
-import React from "react";
+import React, { cloneElement } from "react";
 import { addStates } from "../../functional/states/addStates"
+
+// パフォーマンスに問題が出てきた段階でメモ化を検討する
+// // <ul>をこれにすればいい？ 優先度の高いことを先に実装する
+// export const ParentTest = ({ posts, children }: any) => {
+  
+
+//   // const propsWithChildren = (postsClasskey: string) => {
+//   //   const foodListAry = posts[postsClasskey]
+//   //   return cloneElement(children, { foodListAry: foodListAry })
+//   // }
+
+//   const testClone = cloneElement(children, {test: "test"})
+//   return (
+//     <div className="Test">
+//       <div>こちらがParentTest</div>
+//       {Object.keys(posts).map((postsClasskey: any, idx: number) => {
+//         return (
+//           <ul key={idx}>
+//             <div>{postsClasskey}</div>
+//             {/* {propsWithChildren(postsClasskey)} */}
+//             {testClone}
+//           </ul>
+//           )
+//       })}
+//     </div>
+//   )
+// }
+
+// export const ChildTest = ({ props }: any) => {
+//   return (
+//     <>
+//       {props.test}
+//       {/* {props.foodListAry.map((foodDetailObj: Record<string, string>, idx: number) => {
+//         return <li key={idx}>{foodDetailObj.food_name}</li>
+//       })} */}
+//     </>
+//     )
+// }
+
+// // <li>
+// export const TestContainment1 = ({switchProps}: any) => {
+//   const {posts, states, setStates} = switchProps
+  
+//   return (
+//     <div>
+//       <ParentTest posts={posts}>
+//         <ChildTest />
+//         {/* <>Test</> */}
+//       </ParentTest>
+//     </div>
+//   )
+// }
+
+// export const TestContainment2 = ({switchProps}: any) => {
+//   // const {posts, states, setStates} = switchProps
+  
+//   return (
+//     <>
+//       test2
+//     </>
+//   )
+// }
 
 
 // TODO：変数名、プロパティ名が絶望的にわかりづらいから修正する
 // li要素がクリックされるたびにレンダリングされてしまっている
 export const FoodListVisible = ({switchProps}: any) => {
-  // const keys = Object.keys(props.foodListObj)
   const {switchVisible, posts, states, setStates} = switchProps
 
-  console.log(switchVisible)
-  console.log(posts)
-
+  // postsClasskey: 砂糖、人参など foodListAry: foodObject[]→[{id: "", food_name: "", ...}, {id: "", food_name: "", ...}]
   return (
     <>
-      {/* MEMO:あえてpostsが空の時は値は返さないみたいな処理を書いた方がいい？ */}
       {Object.keys(posts).map((postsClasskey: any, idx: number) => {
         return (
           <ul key={idx}>
             <div>{postsClasskey}</div>
             {switchVisible ?
-              // postsClasskey: 砂糖、人参など foodListAry: foodObject[]→[{id: "", food_name: "", ...}, {id: "", food_name: "", ...}]
               <FoodNameList liProps={{foodListAry: posts[postsClasskey], states: states, setStates: setStates}}/>:
               <FoodDetailList liProps={{foodListAry: posts[postsClasskey]}}/>
             }
@@ -57,7 +113,6 @@ export const FoodListVisible = ({switchProps}: any) => {
 // foodDetailObj={id: "", food_name: "", ...}
 // foodListAry: foodObject[]→[{id: "", food_name: "", ...}, {id: "", food_name: "", ...}]
 const FoodNameList = ({liProps}: any) => {
-  console.log(liProps.foodListAry)
   const {foodListAry, states, setStates} = liProps
 
   return (
@@ -71,7 +126,6 @@ const FoodNameList = ({liProps}: any) => {
 
 // userが選択したfood_nameの成分を表示する機能を表現した関数を作る
 const FoodDetailList = ({liProps}: any) => {
-
   const { foodListAry } = liProps
 
   const filterDetailObj = (foodDetailObj: Record<string, string>) => {
@@ -86,8 +140,6 @@ const FoodDetailList = ({liProps}: any) => {
     })
   }
 
-  const testObj = foodListAry[0]
-  console.log(filterDetailObj(testObj))
   return (
     <div className="foodDetailList">
       {foodListAry.map((foodDetailObj: any, idx: number) => {
