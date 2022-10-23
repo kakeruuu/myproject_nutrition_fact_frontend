@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { render, screen } from '@testing-library/react';
-import { ReadFoodList } from '../components/api/postFoodList'
+import { readFoodList } from '../components/api/postFoodList'
 
 // Testing Trophyの考えに基づくとこのテストは書いてはいけない？
 // →ユーザーから見えない部分だから

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { FoodLists, FoodObject } from "../../../types/foodListType"
 import { PostsForm } from "./postsForm"
 import { FoodListVisible } from "./modules"
+// import { FoodListVisible, TestContainment1, TestContainment2 } from "./modules"
 import { UserSelectFoodNamesContext } from "./providers"
 
 // MEMO:userSelectFoodNamesの値が複数回呼び出されている
@@ -9,21 +10,19 @@ export const FoodList = () => {
   // TODO：空のインプットを渡された時の処理を考える
   const [posts, setPost] = useState<any>({})
   const updateSetPost = (obj: FoodLists | any): void => setPost(obj)
-  
+  const [switchVisible, setSwitchVisible] = useState(true)
   const { userSelectFoodNames, setUserSelectFoodNames } = useContext(UserSelectFoodNamesContext)
 
-  const [switchVisible, setSwitchVisible] = useState(true)
-  
   // postからユーザーが選択したfoodIdのみ抽出する
+  // 同時に複数のstateを更新する場合はstateをオブジェクトにする
   const filterFoodIds = (e: any, userSelectName: string[]) => {
-    setSwitchVisible(false)
     let tmpObj: FoodLists = {}
     let tmpAry: FoodObject[] = []
     Object.keys(posts).forEach((k: any) => {
       tmpAry = posts[k].filter((p: {food_name: string}) => userSelectName.includes(p.food_name))
       if (tmpAry.length) {tmpObj[k] = tmpAry}
     })
-    // setUserSelectFoods({...tmpObj})
+    setSwitchVisible(false)
     setPost({...tmpObj})
   };
 
@@ -33,16 +32,26 @@ export const FoodList = () => {
 
   const switchProps = {
     switchVisible: switchVisible,
-    posts: posts, 
+    posts: posts,
     states: userSelectFoodNames,
-    setStates:setUserSelectFoodNames
+    setStates: setUserSelectFoodNames
   }
+
+  // const switchPropsTest = {    
+  //   posts: posts, 
+  //   states: userSelectFoodNames,
+  //   setStates: setUserSelectFoodNames
+  // }
 
   return (
     <>
       <PostsForm updateSetPost={updateSetPost}/>
       <div className="foodList">
         <FoodListVisible switchProps={switchProps}/>
+        {/* {switchVisible ? 
+          <TestContainment1 switchProps={switchPropsTest}/>:
+          <TestContainment2 switchProps={switchPropsTest}/>
+        } */}
       </div>
       <div className="displaySelectFoodIds">
         {<ul>
