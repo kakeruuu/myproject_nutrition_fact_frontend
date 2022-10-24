@@ -1,5 +1,5 @@
 // MEMO:ReadFoodListはあくまでAPIにテキストを渡して値を返してもらうだけの設計にしたい
-export function readFoodList(query: object, setPost: any) {
+export function readFoodList(query: Record<string, string>, setPost: any) {
   // queryの値が空だった場合エラーを返す
   const params = {method: "POST",
                   headers:{'Content-Type': 'application/json'},
